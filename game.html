@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIM Keys Game</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background: #1a1a2e;
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    #hud-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-height: 80px;
+    }
+
+    .hud-row {
+      display: flex;
+      gap: 20px;
+      font-size: 16px;
+    }
+
+    .hud-label {
+      color: #888;
+    }
+
+    .hud-value {
+      font-weight: bold;
+    }
+
+    .hud-value.score {
+      color: #00ff88;
+    }
+
+    .hud-value.timer {
+      color: #ffd700;
+    }
+
+    .hud-value.length {
+      color: #4ecdc4;
+    }
+
+    .hud-gain {
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 4px;
+      animation: fadeOut 1.5s ease-out forwards;
+    }
+
+    .hud-gain.score {
+      color: #00ff88;
+    }
+
+    .hud-gain.timer {
+      color: #ffd700;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      70% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    #level-display {
+      font-size: 18px;
+      color: #f7d794;
+    }
+
+    #start-hint {
+      color: #888;
+      font-size: 14px;
+    }
+
+    #grid-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1px;
+      background: #2d3436;
+      padding: 2px;
+      border: 2px solid #4a4a6a;
+      border-radius: 4px;
+    }
+
+    .cell {
+      width: 36px;
+      height: 36px;
+      background: #16213e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      position: relative;
+    }
+
+    .cell-content {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Item styles */
+    .player {
+      color: #00ff88;
+      font-size: 24px;
+      z-index: 10;
+    }
+
+    .player-body {
+      color: #00cc66;
+      font-size: 20px;
+      z-index: 9;
+    }
+
+    .player-tail {
+      color: #009944;
+      font-size: 18px;
+      z-index: 8;
+    }
+
+    /* coinGreen: score + grow → green color (score-related) */
+    .coin-yellow {
+      color: #00ff88;
+      font-size: 16px;
+    }
+
+    /* coinOrange: score + timer → orange color (both) */
+    .coin-green {
+      color: #ff9f43;
+      font-size: 16px;
+    }
+
+    /* coinYellow: timer only → yellow color (time-related) */
+    .coin-orange {
+      color: #ffd700;
+      font-size: 16px;
+    }
+
+    .volatile-coin {
+      color: #ff6b6b;
+      font-size: 18px;
+    }
+
+    .volatile-counter {
+      position: absolute;
+      top: 2px;
+      right: 4px;
+      font-size: 10px;
+      color: #ff6b6b;
+    }
+
+    .obstacle {
+      color: #636e72;
+      font-size: 22px;
+    }
+
+    .portal {
+      font-size: 20px;
+    }
+
+    .sigil {
+      color: #a29bfe;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    /* Debug mode - smaller font for indices */
+    .cell-content {
+      font-size: 20px;
+    }
+
+    /* Overcharge mode styles */
+    .player.overcharge {
+      color: #ff6b6b;
+      animation: pulse 0.5s infinite alternate;
+    }
+
+    .player-body.overcharge,
+    .player-tail.overcharge {
+      color: #ff6b6b;
+    }
+
+    @keyframes pulse {
+      from { opacity: 1; }
+      to { opacity: 0.6; }
+    }
+
+    #hud-bottom {
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+    }
+
+    #settings-btn {
+      background: none;
+      border: 1px solid #4a4a6a;
+      color: #888;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+
+    #settings-btn:hover {
+      background: #2d3436;
+      color: #eee;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #1a1a2e;
+      border: 2px solid #4a4a6a;
+      border-radius: 8px;
+      padding: 24px;
+      min-width: 500px;
+      max-width: 90vw;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      color: #f7d794;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      color: #eee;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: 1px solid #4a4a6a;
+      color: #888;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+
+    .tab-btn.active {
+      background: #4a4a6a;
+      color: #eee;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .config-section {
+      margin-bottom: 20px;
+    }
+
+    .config-section-title {
+      color: #4ecdc4;
+      font-size: 14px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .config-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #2d3436;
+    }
+
+    .config-label {
+      color: #888;
+    }
+
+    .config-input {
+      background: #16213e;
+      border: 1px solid #4a4a6a;
+      color: #eee;
+      padding: 4px 8px;
+      width: 80px;
+      text-align: center;
+      font-family: inherit;
+    }
+
+    .keybinding-row {
+      display: grid;
+      grid-template-columns: 1fr 80px 80px;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #2d3436;
+      align-items: center;
+    }
+
+    .keybinding-action {
+      color: #888;
+    }
+
+    .keybinding-default {
+      color: #4ecdc4;
+      text-align: center;
+    }
+
+    .keybinding-custom {
+      background: #16213e;
+      border: 1px solid #4a4a6a;
+      color: #eee;
+      padding: 4px;
+      text-align: center;
+      font-family: inherit;
+    }
+
+    .keybinding-custom.conflict {
+      border-color: #ff6b6b;
+    }
+
+    .save-slots {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .slot-btn {
+      background: #16213e;
+      border: 1px solid #4a4a6a;
+      color: #888;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+
+    .slot-btn.active {
+      background: #4a4a6a;
+      color: #eee;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .modal-btn {
+      background: none;
+      border: 1px solid #4a4a6a;
+      color: #888;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+
+    .modal-btn:hover {
+      background: #2d3436;
+      color: #eee;
+    }
+
+    .modal-btn.primary {
+      background: #4ecdc4;
+      border-color: #4ecdc4;
+      color: #1a1a2e;
+    }
+
+    .modal-btn.primary:hover {
+      background: #3dbdb5;
+    }
+
+    /* Portal colors - 6 distinct colors */
+    .portal-1 { color: #ff6b6b; }
+    .portal-2 { color: #00ff88; }
+    .portal-3 { color: #f7d794; }
+    .portal-4 { color: #a29bfe; }
+    .portal-5 { color: #636e72; }
+    .portal-6 { color: #d2691e; }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div id="hud-top">
+      <!-- Dynamic content based on game state -->
+    </div>
+
+    <div id="grid-container">
+      <!-- Grid will be rendered here -->
+    </div>
+
+    <div id="hud-bottom">
+      <button id="settings-btn">Settings (Esc)</button>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">Settings</span>
+        <button class="modal-close">&times;</button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="gameplay">Gameplay</button>
+        <button class="tab-btn" data-tab="keybindings">Keybindings</button>
+      </div>
+
+      <div id="tab-gameplay" class="tab-content active">
+        <!-- Gameplay settings will be rendered here -->
+      </div>
+
+      <div id="tab-keybindings" class="tab-content">
+        <!-- Keybinding settings will be rendered here -->
+      </div>
+
+      <div class="save-slots">
+        <span class="config-label">Save Slot:</span>
+        <button class="slot-btn active" data-slot="1">1</button>
+        <button class="slot-btn" data-slot="2">2</button>
+        <button class="slot-btn" data-slot="3">3</button>
+        <button class="slot-btn" data-slot="4">4</button>
+        <button class="slot-btn" data-slot="5">5</button>
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-btn" id="reset-defaults-btn">Reset to Default</button>
+        <button class="modal-btn" id="cancel-btn">Cancel</button>
+        <button class="modal-btn primary" id="apply-btn">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="level.js"></script>
+  <script>
+    // ============================================
+    // GAME STATE
+    // ============================================
+    const GameState = {
+      OUT_OF_GAME: 'out_of_game',
+      IN_GAME: 'in_game'
+    };
+
+    // ============================================
+    // DEFAULT CONFIGURATION
+    // ============================================
+    const DEFAULT_CONFIG = {
+      gameplay: {
+        countdownTimer: 30,
+        lineOfSight: 0,
+        sigilLetters: 'asdf',
+        maxCoins: 10,
+        coinSpawnFrequency: 4,
+        volatileInitialCounter: 5,
+        volatileDecrementalStep: 1,
+        volatileSpawnFrequency: 8,
+        overchargeCounter: 5,
+        maxBonusScore: 5,
+        obstacleDensity: 10,
+        sigilDensity: 2,
+        minPortalPairs: 2
+      },
+      keybindings: {
+        moveLeft: 'h',
+        moveDown: 'j',
+        moveUp: 'k',
+        moveRight: 'l',
+        gridLeft: 'H',
+        gridDown: 'J',
+        gridUp: 'K',
+        gridRight: 'L',
+        sigil1Forward: 'a',
+        sigil2Forward: 's',
+        sigil3Forward: 'd',
+        sigil4Forward: 'f',
+        sigil1Backward: 'A',
+        sigil2Backward: 'S',
+        sigil3Backward: 'D',
+        sigil4Backward: 'F'
+      }
+    };
+
+    // ============================================
+    // GAME ENGINE
+    // ============================================
+    const Game = {
+      // State
+      state: GameState.OUT_OF_GAME,
+      currentLevelIndex: 0,
+      currentLevel: null,
+      config: JSON.parse(JSON.stringify(DEFAULT_CONFIG)),
+      currentSlot: 1,
+
+      // Debug mode: render segments with numeric indices
+      debugMode: false,
+
+      // Player state
+      player: {
+        segments: [], // Array of {row, col} - head is [0], tail is last
+        overchargeMode: false,
+        overchargeCounter: 0,
+        overchargeMaxLength: 0, // Cached max body length during overcharge
+        cacheTail: null,
+        portalPending: null, // Track segments waiting to teleport
+      },
+
+      // Last gains for HUD notification
+      lastGains: {
+        score: 0,
+        timer: 0,
+        timestamp: 0
+      },
+
+      // Game data
+      items: [], // Current items on grid
+      score: 0,
+      previousScore: 0,
+      highScore: 0,
+      timer: 0,
+      timerInterval: null,
+      actionCount: 0,
+
+      // Dynamic level seed
+      dynamicSeed: null,
+
+      // ============================================
+      // INITIALIZATION
+      // ============================================
+      init() {
+        this.loadConfig();
+        this.loadHighScores();
+        this.loadLevel(this.currentLevelIndex);
+        this.setupEventListeners();
+        this.render();
+      },
+
+      loadConfig() {
+        const saved = localStorage.getItem(`vimkeys_config_slot_${this.currentSlot}`);
+        if (saved) {
+          try {
+            this.config = JSON.parse(saved);
+          } catch (e) {
+            this.config = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+          }
+        }
+      },
+
+      saveConfig() {
+        localStorage.setItem(`vimkeys_config_slot_${this.currentSlot}`, JSON.stringify(this.config));
+      },
+
+      loadHighScores() {
+        const saved = localStorage.getItem('vimkeys_highscores');
+        if (saved) {
+          try {
+            this.highScores = JSON.parse(saved);
+          } catch (e) {
+            this.highScores = {};
+          }
+        } else {
+          this.highScores = {};
+        }
+        this.highScore = this.highScores[this.currentLevelIndex] || 0;
+      },
+
+      saveHighScore() {
+        if (this.score > this.highScore) {
+          this.highScore = this.score;
+          this.highScores[this.currentLevelIndex] = this.score;
+          localStorage.setItem('vimkeys_highscores', JSON.stringify(this.highScores));
+        }
+      },
+
+      // ============================================
+      // LEVEL MANAGEMENT
+      // ============================================
+      loadLevel(index) {
+        this.currentLevelIndex = index;
+        this.currentLevel = getLevelByIndex(index);
+        this.highScore = this.highScores[index] || 0;
+        this.resetLevel();
+      },
+
+      resetLevel() {
+        const level = this.currentLevel;
+
+        // For dynamic levels, generate first to set playerSpawn
+        if (level.type === 'dynamic') {
+          this.generateDynamicLevel();
+        } else {
+          this.items = JSON.parse(JSON.stringify(level.items || []));
+        }
+
+        // Reset player (now playerSpawn is guaranteed to exist)
+        this.player.segments = [{ row: level.playerSpawn.row, col: level.playerSpawn.col }];
+        this.player.overchargeMode = false;
+        this.player.overchargeCounter = 0;
+        this.player.overchargeMaxLength = 0;
+        this.player.portalPending = null;
+        this.player.cacheTail = null;
+
+        // Reset game data
+        this.score = 0;
+        this.actionCount = 0;
+        this.timer = this.config.gameplay.countdownTimer;
+
+        // Reset gains notification
+        this.lastGains = { score: 0, timer: 0, timestamp: 0 };
+
+        this.render();
+      },
+
+      generateDynamicLevel() {
+        if (!this.dynamicSeed) {
+          this.dynamicSeed = Date.now();
+        }
+
+        const level = this.currentLevel;
+        const rows = level.grid.rows;
+        const cols = level.grid.cols;
+        const totalCells = rows * cols;
+
+        // Simple seeded random
+        let seed = this.dynamicSeed;
+        const random = () => {
+          seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+          return seed / 0x7fffffff;
+        };
+
+        this.items = [];
+        const occupied = new Set();
+
+        // Mark player spawn as occupied
+        const spawnRow = Math.floor(random() * rows);
+        const spawnCol = Math.floor(random() * cols);
+        this.currentLevel.playerSpawn = { row: spawnRow, col: spawnCol };
+        occupied.add(`${spawnRow},${spawnCol}`);
+
+        // Generate obstacles
+        const obstacleCount = Math.floor(totalCells * this.config.gameplay.obstacleDensity / 100);
+        for (let i = 0; i < obstacleCount; i++) {
+          let row, col;
+          do {
+            row = Math.floor(random() * rows);
+            col = Math.floor(random() * cols);
+          } while (occupied.has(`${row},${col}`));
+          occupied.add(`${row},${col}`);
+          this.items.push({ type: 'obstacle', row, col });
+        }
+
+        // Generate portals (in pairs, capped at 6 pairs for distinct colors)
+        const portalPairs = Math.min(Math.max(this.config.gameplay.minPortalPairs, Math.floor(random() * 6) + 1), 6);
+        console.log("Generating", this.config.gameplay.minPortalPairs, "portal pairs");
+        for (let pairId = 1; pairId <= portalPairs; pairId++) {
+          for (let j = 0; j < 2; j++) {
+            let row, col;
+            let attempts = 0;
+            do {
+              row = Math.floor(random() * rows);
+              col = Math.floor(random() * cols);
+              attempts++;
+            } while (occupied.has(`${row},${col}`) && attempts < 100);
+            if (attempts < 100) {
+              occupied.add(`${row},${col}`);
+              this.items.push({ type: 'portal', pairId, row, col });
+            }
+          }
+        }
+
+        // Generate sigils (fixed amount per letter)
+        const sigilLetters = this.config.gameplay.sigilLetters;
+        const sigilsPerLetter = this.config.gameplay.sigilDensity;
+
+        for (let i = 0; i < sigilLetters.length; i++) {
+          for (let j = 0; j < sigilsPerLetter; j++) {
+            let row, col;
+            let attempts = 0;
+            do {
+              row = Math.floor(random() * rows);
+              col = Math.floor(random() * cols);
+              attempts++;
+            } while (occupied.has(`${row},${col}`) && attempts < 100);
+
+            if (attempts < 100) {
+              occupied.add(`${row},${col}`);
+              this.items.push({ type: 'sigil', letter: sigilLetters[i], row, col });
+            }
+          }
+        }
+
+        // Generate initial coins
+        const initialCoins = Math.min(this.config.gameplay.maxCoins, 5);
+        for (let i = 0; i < initialCoins; i++) {
+          this.spawnCoin(random);
+        }
+      },
+
+      spawnCoin(randomFn) {
+        const level = this.currentLevel;
+        const rows = level.grid.rows;
+        const cols = level.grid.cols;
+
+        const random = randomFn || Math.random;
+
+        // Find occupied cells (by obstacles and portals only - coins can be on sigils)
+        const blocked = new Set();
+        this.items.forEach(item => {
+          if (item.type === 'obstacle' || item.type === 'portal') {
+            blocked.add(`${item.row},${item.col}`);
+          }
+        });
+
+        // Also block player positions
+        this.player.segments.forEach(seg => blocked.add(`${seg.row},${seg.col}`));
+
+        // Block existing coins
+        this.items.forEach(item => {
+          if (item.type === 'coinGreen' || item.type === 'coinOrange' ||
+              item.type === 'coinYellow' || item.type === 'volatileCoin') {
+            blocked.add(`${item.row},${item.col}`);
+          }
+        });
+
+        let row, col;
+        let attempts = 0;
+        do {
+          row = Math.floor(random() * rows);
+          col = Math.floor(random() * cols);
+          attempts++;
+        } while (blocked.has(`${row},${col}`) && attempts < 100);
+
+        if (attempts < 100) {
+          this.items.push({ type: 'coinGreen', row, col });
+        }
+      },
+
+      // Spawn a coin at specific position (used when converting body parts)
+      spawnCoinAt(row, col, coinType) {
+        // Check if position is blocked by obstacle or portal
+        const blocked = this.items.some(item =>
+          (item.type === 'obstacle' || item.type === 'portal') &&
+          item.row === row && item.col === col
+        );
+        if (!blocked) {
+          this.items.push({ type: coinType, row, col });
+        }
+      },
+
+      spawnVolatileCoin(randomFn) {
+        const level = this.currentLevel;
+        const rows = level.grid.rows;
+        const cols = level.grid.cols;
+
+        const random = randomFn || Math.random;
+
+        // Find occupied cells
+        const blocked = new Set();
+        this.items.forEach(item => {
+          if (item.type === 'obstacle' || item.type === 'portal') {
+            blocked.add(`${item.row},${item.col}`);
+          }
+        });
+
+        // Block player positions
+        this.player.segments.forEach(seg => blocked.add(`${seg.row},${seg.col}`));
+
+        // Block existing coins
+        this.items.forEach(item => {
+          if (item.type === 'coinGreen' || item.type === 'coinOrange' ||
+              item.type === 'coinYellow' || item.type === 'volatileCoin') {
+            blocked.add(`${item.row},${item.col}`);
+          }
+        });
+
+        let row, col;
+        let attempts = 0;
+        do {
+          row = Math.floor(random() * rows);
+          col = Math.floor(random() * cols);
+          attempts++;
+        } while (blocked.has(`${row},${col}`) && attempts < 100);
+
+        if (attempts < 100) {
+          this.items.push({
+            type: 'volatileCoin',
+            row,
+            col,
+            counter: this.config.gameplay.volatileInitialCounter
+          });
+        }
+      },
+
+      regenerateDynamicLevel() {
+        if (this.currentLevel.type === 'dynamic') {
+          this.dynamicSeed = Date.now();
+          this.resetLevel();
+        }
+      },
+
+      nextLevel() {
+        const total = getLevelCount();
+        this.loadLevel((this.currentLevelIndex + 1) % total);
+      },
+
+      previousLevel() {
+        const total = getLevelCount();
+        this.loadLevel((this.currentLevelIndex - 1 + total) % total);
+      },
+
+      // ============================================
+      // GAME STATE MANAGEMENT
+      // ============================================
+      startGame() {
+        if (this.currentLevel.type === 'demo') {
+          // Demo levels just reset
+          this.resetLevel();
+          return;
+        }
+
+        if (this.state === GameState.OUT_OF_GAME) {
+          this.state = GameState.IN_GAME;
+          this.resetLevel();
+          this.startTimer();
+        } else {
+          this.stopGame();
+        }
+        this.render();
+      },
+
+      stopGame() {
+        this.state = GameState.OUT_OF_GAME;
+        this.stopTimer();
+        this.previousScore = this.score;
+        this.saveHighScore();
+        this.render();
+      },
+
+      startTimer() {
+        this.stopTimer();
+        this.timerInterval = setInterval(() => {
+          this.timer--;
+          if (this.timer <= 0) {
+            this.stopGame();
+          }
+          this.renderHUD();
+        }, 1000);
+      },
+
+      stopTimer() {
+        if (this.timerInterval) {
+          clearInterval(this.timerInterval);
+          this.timerInterval = null;
+        }
+      },
+
+      // ============================================
+      // MOVEMENT
+      // ============================================
+      move(direction) {
+        const head = this.player.segments[0];
+        let newRow = head.row;
+        let newCol = head.col;
+        switch (direction) {
+          case 'left':  newCol--; break;
+          case 'right': newCol++; break;
+          case 'up':    newRow--; break;
+          case 'down':  newRow++; break;
+        }
+        if (this.player.segments.length > 1) {
+          const neck = this.player.segments[1];
+          if (newRow === neck.row && newCol === neck.col) {
+            return; // Prevent reversing into self
+          }
+        }
+        const level = this.currentLevel;
+
+        // Boundary check
+        if (newRow < 0 || newRow >= level.grid.rows ||
+            newCol < 0 || newCol >= level.grid.cols) {
+          return; // Stay at boundary
+        }
+
+        // Check for obstacle collision
+        const obstacle = this.items.find(item =>
+          item.type === 'obstacle' && item.row === newRow && item.col === newCol
+        );
+        if (obstacle) {
+          return; // Blocked by obstacle
+        }
+
+        // Execute move
+        this.executeMove(newRow, newCol, true);
+      },
+
+      findValidSpawn() {
+        const level = this.currentLevel;
+        const rows = level.grid.rows;
+        const cols = level.grid.cols;
+
+        const blocked = new Set();
+        this.items.forEach(item => {
+          if (item.type === 'obstacle' || item.type === 'portal') {
+            blocked.add(`${item.row},${item.col}`);
+          }
+        });
+
+        for (let attempts = 0; attempts < 100; attempts++) {
+          const row = Math.floor(Math.random() * rows);
+          const col = Math.floor(Math.random() * cols);
+          if (!blocked.has(`${row},${col}`)) {
+            return { row, col };
+          }
+        }
+        return { row: 0, col: 0 };
+      },
+
+      updateVolatileCoins() {
+        this.items = this.items.filter(item => {
+          if (item.type === 'volatileCoin') {
+            item.counter -= this.config.gameplay.volatileDecrementalStep;
+            return item.counter > 0;
+          }
+          return true;
+        });
+      },
+
+      executeMove(newRow, newCol, isCollidable) {
+        // Process any pending portal teleports first
+        this.processPortalPending();
+
+        // Snake movement (same in normal and overcharge mode)
+        // Move head
+        const newHead = { row: newRow, col: newCol };
+
+        // Check for self-collision (attached body) - Attack in both modes
+        const selfHit = this.player.segments.slice(1).findIndex(
+          seg => seg.row === newRow && seg.col === newCol
+        );
+
+        if (selfHit !== -1) {
+          // Attack: split body, convert tail part to coins, move head to new position
+          this.handleAttack(selfHit + 1, newRow, newCol);
+        } else {
+          // Normal move
+          this.player.segments.unshift(newHead);
+          this.player.cacheTail = this.player.segments.pop();
+
+          // Handle collision at new position
+          this.handleCollision(newRow, newCol, isCollidable);
+        }
+
+        // Update overcharge max length cache
+        if (this.player.overchargeMode) {
+          this.player.overchargeMaxLength = Math.max(
+            this.player.overchargeMaxLength,
+            this.player.segments.length
+          );
+          // Decrement overcharge counter
+          this.player.overchargeCounter--;
+          if (this.player.overchargeCounter <= 0) {
+            this.player.overchargeMode = false;
+            this.player.overchargeMaxLength = 0;
+          }
+        }
+
+        this.actionCount++;
+        this.updateVolatileCoins();
+
+        // Spawn new coin periodically (only in-game and non-demo)
+        if (this.state === GameState.IN_GAME &&
+            this.actionCount % this.config.gameplay.coinSpawnFrequency === 0) {
+          const coinCount = this.items.filter(i =>
+            i.type === 'coinGreen' || i.type === 'coinOrange' || i.type === 'coinYellow'
+          ).length;
+          if (coinCount < this.config.gameplay.maxCoins) {
+            this.spawnCoin();
+          }
+        }
+
+        // Spawn volatile coin periodically
+        if (this.state === GameState.IN_GAME &&
+            this.actionCount % this.config.gameplay.volatileSpawnFrequency === 0) {
+          this.spawnVolatileCoin();
+        }
+
+        this.render();
+      },
+
+      handleCollision(row, col, isCollidable) {
+        // Check for coins (yellow, green, orange, volatile)
+        const coinIndex = this.items.findIndex(item =>
+          (item.type === 'coinGreen' || item.type === 'coinOrange' ||
+           item.type === 'coinYellow' || item.type === 'volatileCoin') &&
+          item.row === row && item.col === col
+        );
+
+        if (coinIndex !== -1) {
+          const coin = this.items[coinIndex];
+          this.collectCoin(coin);
+          this.items.splice(coinIndex, 1);
+          return;
+        }
+
+        // Check for portals
+        const portal = this.items.find(item =>
+          item.type === 'portal' && item.row === row && item.col === col
+        );
+
+        if (portal) {
+          this.handlePortal(portal);
+          return;
+        }
+      },
+
+      collectCoin(coin) {
+        if (this.currentLevel.type === 'demo') {
+          // Demo mode: just grow for yellow coins, no score
+          if (coin.type === 'coinGreen') {
+            this.growPlayer();
+          }
+          return;
+        }
+
+        // Calculate score booster based on body length
+        // In overcharge mode, use cached max length (no cap)
+        const effectiveLength = this.player.overchargeMode
+          ? this.player.overchargeMaxLength
+          : this.player.segments.length;
+        const bodyBonus = this.player.overchargeMode
+          ? effectiveLength - 1
+          : Math.min(effectiveLength - 1, this.config.gameplay.maxBonusScore);
+
+        // Reset gains for this action
+        let scoreGain = 0;
+        let timerGain = 0;
+
+        switch (coin.type) {
+          case 'coinGreen':
+            // Yellow (green color): +1 score + bonus, +1 body length
+            scoreGain = 1 + bodyBonus;
+            this.score += scoreGain;
+            this.growPlayer();
+            break;
+          case 'coinOrange':
+            // Green (orange color): +1 score + bonus, +1 timer + bonus, no body length
+            scoreGain = 1 + bodyBonus;
+            timerGain = 1; // + bodyBonus;
+            this.score += scoreGain;
+            this.timer += timerGain;
+            break;
+          case 'coinYellow':
+            // Orange (yellow color): +1 second timer, no score, no body length
+            timerGain = 1;
+            this.timer += timerGain;
+            break;
+          case 'volatileCoin':
+            // Volatile: enter overcharge mode
+            scoreGain = 1 + (coin.counter || 0) + bodyBonus;
+            this.score += scoreGain;
+            this.player.overchargeMode = true;
+            this.player.overchargeCounter = this.config.gameplay.overchargeCounter;
+            this.player.overchargeMaxLength = this.player.segments.length;
+            break;
+        }
+
+        // Track gains for HUD notification
+        this.lastGains = {
+          score: scoreGain,
+          timer: timerGain,
+          timestamp: Date.now()
+        };
+      },
+
+      growPlayer() {
+        // Add segment at tail position
+        const tail = this.player.cacheTail || this.player.segments[this.player.segments.length - 1];
+        this.player.segments.push({ ...tail });
+        this.player.cacheTail = null;
+      },
+
+      handlePortal(portal) {
+        // Find paired portal
+        const pairedPortal = this.items.find(item =>
+          item.type === 'portal' &&
+          item.pairId === portal.pairId &&
+          (item.row !== portal.row || item.col !== portal.col)
+        );
+
+        if (!pairedPortal) return;
+
+        // Teleport only the head to the destination
+        // The rest of the body stays - they will be dragged through on subsequent moves
+        this.player.segments[0] = { row: pairedPortal.row, col: pairedPortal.col };
+
+        // Mark that segments on source portal need to teleport on next move
+        this.player.portalPending = {
+          sourceRow: portal.row,
+          sourceCol: portal.col,
+          destRow: pairedPortal.row,
+          destCol: pairedPortal.col
+        };
+      },
+
+      // Process pending portal teleports for body segments
+      processPortalPending() {
+        if (!this.player.portalPending) return;
+
+        const pending = this.player.portalPending;
+
+        // Check if any segment (except head) is on the source portal
+        for (let i = 1; i < this.player.segments.length; i++) {
+          const seg = this.player.segments[i];
+          if (seg.row === pending.sourceRow && seg.col === pending.sourceCol) {
+            // Teleport this segment to destination
+            this.player.segments[i] = { row: pending.destRow, col: pending.destCol };
+            // Keep the pending state for the next segment
+            return;
+          }
+        }
+
+        // No more segments on source portal, clear pending
+        this.player.portalPending = null;
+      },
+
+      handleAttack(hitIndex, newRow, newCol) {
+        // Attack: split body at hitIndex, convert tail part to coins
+        // hitIndex is the index of the attacked segment (1-based from slice)
+
+        // Keep segments from head to just before the attacked part
+        const keptSegments = this.player.segments.slice(0, hitIndex);
+
+        // The attacked part is vanished (not converted to coin)
+        // Convert segments from after attacked part to tail into coins
+        const tailSegments = this.player.segments.slice(hitIndex + 1);
+
+        // Determine coin type: yellow (time) in green mode, orange (score+time) in overcharge mode
+        const coinType = this.player.overchargeMode ? 'coinOrange' : 'coinYellow';
+
+        // Convert tail segments to coins
+        for (const seg of tailSegments) {
+          this.spawnCoinAt(seg.row, seg.col, coinType);
+        }
+
+        // Move head to the new position (the attacked segment's position)
+        keptSegments[0] = { row: newRow, col: newCol };
+
+        // Update player segments
+        this.player.segments = keptSegments;
+
+        // If only head left (length 1), that's fine - no need to respawn
+      },
+
+      // Sigil movement
+      moveSigil(letter, forward) {
+        const sigils = this.items
+          .filter(item => item.type === 'sigil' && item.letter === letter)
+          .sort((a, b) => {
+            // Sort by row then col
+            if (a.row !== b.row) return a.row - b.row;
+            return a.col - b.col;
+          });
+
+        if (sigils.length === 0) return;
+
+        const head = this.player.segments[0];
+        const currentPos = head.row * this.currentLevel.grid.cols + head.col;
+
+        // Find sigils sorted by position
+        const sigisWithPos = sigils.map(s => ({
+          ...s,
+          pos: s.row * this.currentLevel.grid.cols + s.col
+        }));
+
+        let targetSigil;
+
+        if (forward) {
+          // Find first sigil after current position (or wrap to first)
+          targetSigil = sigisWithPos.find(s => s.pos > currentPos) || sigisWithPos[0];
+        } else {
+          // Find last sigil before current position (or wrap to last)
+          const before = sigisWithPos.filter(s => s.pos < currentPos);
+          targetSigil = before.length > 0 ? before[before.length - 1] : sigisWithPos[sigisWithPos.length - 1];
+        }
+
+        if (targetSigil) {
+          // Sigil move causes detachment - convert body parts to coins
+          if (this.player.segments.length > 1) {
+            // Convert all body parts (except head) to coins
+            const bodySegments = this.player.segments.slice(1);
+
+            // Determine coin type: orange in green mode, green in overcharge mode
+            const coinType = this.player.overchargeMode ? 'coinOrange' : 'coinYellow';
+
+            for (const seg of bodySegments) {
+              this.spawnCoinAt(seg.row, seg.col, coinType);
+            }
+          }
+
+          // Move head to target sigil
+          this.player.segments = [{ row: targetSigil.row, col: targetSigil.col }];
+          this.player.portalPending = null; // Clear any pending portal
+
+          this.actionCount++;
+          this.updateVolatileCoins();
+
+          // Decrement overcharge counter if active
+          if (this.player.overchargeMode) {
+            this.player.overchargeCounter--;
+            if (this.player.overchargeCounter <= 0) {
+              this.player.overchargeMode = false;
+              this.player.overchargeMaxLength = 0;
+            }
+          }
+
+          this.render();
+        }
+      },
+
+      // ============================================
+      // RENDERING
+      // ============================================
+      render() {
+        this.renderHUD();
+        this.renderGrid();
+      },
+
+      renderHUD() {
+        const hudTop = document.getElementById('hud-top');
+        const level = this.currentLevel;
+
+        if (this.state === GameState.IN_GAME) {
+          const overchargeIndicator = this.player.overchargeMode
+            ? `<div class="hud-row"><span class="hud-label" style="color:#ff6b6b">OVERCHARGE:</span><span class="hud-value" style="color:#ff6b6b">${this.player.overchargeCounter}</span></div>`
+            : '';
+
+          // Check if gains are recent (within 1.5 seconds)
+          const isRecentGain = Date.now() - this.lastGains.timestamp < 1500;
+          const scoreGainHtml = isRecentGain && this.lastGains.score > 0
+            ? `<span class="hud-gain score">+${this.lastGains.score}</span>`
+            : '';
+          const timerGainHtml = isRecentGain && this.lastGains.timer > 0
+            ? `<span class="hud-gain timer">+${this.lastGains.timer}</span>`
+            : '';
+
+          hudTop.innerHTML = `
+            <div class="hud-row">
+              <span class="hud-label">Score:</span>
+              <span class="hud-value score">${this.score}</span>${scoreGainHtml}
+              <span class="hud-label">Length:</span>
+              <span class="hud-value length">${this.player.segments.length}</span>
+            </div>
+            <div class="hud-row">
+              <span class="hud-label">Time:</span>
+              <span class="hud-value timer">${this.timer}s</span>${timerGainHtml}
+            </div>
+            ${overchargeIndicator}
+          `;
+        } else {
+          const isDemo = level.type === 'demo';
+          const demoStats = isDemo
+            ? `<div class="hud-row"><span class="hud-label">Length:</span><span class="hud-value length">${this.player.segments.length}</span></div>`
+            : `<div class="hud-row"><span class="hud-label">Previous:</span><span class="hud-value score">${this.previousScore}</span><span class="hud-label">High:</span><span class="hud-value score">${this.highScore}</span></div>`;
+          hudTop.innerHTML = `
+            ${demoStats}
+            <div id="level-display">
+              <span style="color:#888">[</span> ${level.name} <span style="color:#888">]</span>
+            </div>
+            <div id="start-hint">
+              ${isDemo ? 'Press \\ to reset' : 'Press \\ to start'}
+              ${level.type === 'dynamic' ? ' | Backspace to regenerate' : ''}
+            </div>
+          `;
+        }
+      },
+
+      renderGrid() {
+        const container = document.getElementById('grid-container');
+        const level = this.currentLevel;
+        const { rows, cols } = level.grid;
+
+        let html = `<div class="grid" style="grid-template-columns: repeat(${cols}, 36px); grid-template-rows: repeat(${rows}, 36px);">`;
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            html += `<div class="cell">${this.renderCell(r, c)}</div>`;
+          }
+        }
+
+        html += '</div>';
+        container.innerHTML = html;
+      },
+
+      renderCell(row, col) {
+        let content = '';
+
+        // Check for player segments
+        const headIndex = this.player.segments.findIndex(seg => seg.row === row && seg.col === col);
+        const overchargeClass = this.player.overchargeMode ? ' overcharge' : '';
+        if (headIndex !== -1) {
+          if (this.debugMode) {
+            // Debug: show numeric index
+            content += `<span class="cell-content player${overchargeClass}">${headIndex}</span>`;
+          } else if (headIndex === 0) {
+            content += `<span class="cell-content player${overchargeClass}">\u25a2</span>`;
+          } else if (headIndex === this.player.segments.length - 1 && this.player.segments.length > 1) {
+            content += `<span class="cell-content player-tail${overchargeClass}">\u2a2f</span>`;
+          } else {
+            content += `<span class="cell-content player-body${overchargeClass}">\u25a2</span>`;
+          }
+        }
+
+        // Check for items
+        const items = this.items.filter(item => item.row === row && item.col === col);
+        for (const item of items) {
+          switch (item.type) {
+            case 'coinGreen':
+              content += `<span class="cell-content coin-yellow">\u2022</span>`;
+              break;
+            case 'coinOrange':
+              content += `<span class="cell-content coin-green">\u2022</span>`;
+              break;
+            case 'coinYellow':
+              content += `<span class="cell-content coin-orange">\u2022</span>`;
+              break;
+            case 'volatileCoin':
+              content += `<span class="cell-content volatile-coin">\u22c6</span>`;
+              content += `<span class="volatile-counter">${item.counter}</span>`;
+              break;
+            case 'obstacle':
+              content += `<span class="cell-content obstacle">\u25ae</span>`;
+              break;
+            case 'portal':
+              const portalClass = `portal-${((item.pairId - 1) % 6) + 1}`;
+              content += `<span class="cell-content portal ${portalClass}">\u25cb</span>`;
+              break;
+            case 'sigil':
+              content += `<span class="cell-content sigil">${item.letter}</span>`;
+              break;
+          }
+        }
+
+        return content;
+      },
+
+      // ============================================
+      // SETTINGS MODAL
+      // ============================================
+      openSettings() {
+        document.getElementById('settings-modal').classList.add('active');
+        this.renderSettingsContent();
+      },
+
+      closeSettings() {
+        document.getElementById('settings-modal').classList.remove('active');
+      },
+
+      renderSettingsContent() {
+        // Render Gameplay tab
+        const gameplayTab = document.getElementById('tab-gameplay');
+        gameplayTab.innerHTML = `
+          <div class="config-section">
+            <div class="config-section-title">Gameplay</div>
+            <div class="config-row">
+              <span class="config-label">Countdown Timer (seconds)</span>
+              <input type="number" class="config-input" id="cfg-countdownTimer" value="${this.config.gameplay.countdownTimer}">
+            </div>
+            <div class="config-row">
+              <span class="config-label">Line of Sight (0 = unlimited)</span>
+              <input type="number" class="config-input" id="cfg-lineOfSight" value="${this.config.gameplay.lineOfSight}">
+            </div>
+            <div class="config-row">
+              <span class="config-label">Sigil Letters</span>
+              <input type="text" class="config-input" id="cfg-sigilLetters" value="${this.config.gameplay.sigilLetters}" style="width:100px">
+            </div>
+          </div>
+
+          <div class="config-section">
+            <div class="config-section-title">Random Level Generation</div>
+            <div class="config-row">
+              <span class="config-label">Obstacle Density (%)</span>
+              <input type="number" class="config-input" id="cfg-obstacleDensity" value="${this.config.gameplay.obstacleDensity}" min="0" max="20">
+            </div>
+            <div class="config-row">
+              <span class="config-label">Sigils Per Letter</span>
+              <input type="number" class="config-input" id="cfg-sigilDensity" value="${this.config.gameplay.sigilDensity}" min="1" max="10">
+            </div>
+            <div class="config-row">
+              <span class="config-label">Minimal Portal Pairs (1-6)</span>
+              <input type="number" class="config-input" id="cfg-portalPairs" value="${this.config.gameplay.minPortalPairs}" min="1" max="6">
+            </div>
+          </div>
+
+          <div class="config-section">
+            <div class="config-section-title">Coins</div>
+            <div class="config-row">
+              <span class="config-label">Max Displaying Coins</span>
+              <input type="number" class="config-input" id="cfg-maxCoins" value="${this.config.gameplay.maxCoins}">
+            </div>
+            <div class="config-row">
+              <span class="config-label">Spawn Frequency (actions)</span>
+              <input type="number" class="config-input" id="cfg-coinSpawnFrequency" value="${this.config.gameplay.coinSpawnFrequency}">
+            </div>
+          </div>
+
+          <div class="config-section">
+            <div class="config-section-title">Volatile Coins</div>
+            <div class="config-row">
+              <span class="config-label">Initial Counter</span>
+              <input type="number" class="config-input" id="cfg-volatileInitialCounter" value="${this.config.gameplay.volatileInitialCounter}">
+            </div>
+            <div class="config-row">
+              <span class="config-label">Decremental Step</span>
+              <input type="number" class="config-input" id="cfg-volatileDecrementalStep" value="${this.config.gameplay.volatileDecrementalStep}">
+            </div>
+            <div class="config-row">
+              <span class="config-label">Spawn Frequency (actions)</span>
+              <input type="number" class="config-input" id="cfg-volatileSpawnFrequency" value="${this.config.gameplay.volatileSpawnFrequency}">
+            </div>
+            <div class="config-row">
+              <span class="config-label">Overcharge Duration (moves)</span>
+              <input type="number" class="config-input" id="cfg-overchargeCounter" value="${this.config.gameplay.overchargeCounter}">
+            </div>
+          </div>
+
+          <div class="config-section">
+            <div class="config-section-title">Scoring</div>
+            <div class="config-row">
+              <span class="config-label">Max Bonus Score</span>
+              <input type="number" class="config-input" id="cfg-maxBonusScore" value="${this.config.gameplay.maxBonusScore}">
+            </div>
+          </div>
+        `;
+
+        // Render Keybindings tab
+        const keybindingsTab = document.getElementById('tab-keybindings');
+        const kb = this.config.keybindings;
+        const defaultKb = DEFAULT_CONFIG.keybindings;
+
+        keybindingsTab.innerHTML = `
+          <div class="config-section">
+            <div class="config-section-title">Movement</div>
+            <div class="keybinding-row">
+              <span class="keybinding-action">Action</span>
+              <span class="keybinding-default">Default</span>
+              <span class="keybinding-default">Custom</span>
+            </div>
+            ${this.renderKeybindingRow('Move Left', 'moveLeft', defaultKb.moveLeft, kb.moveLeft)}
+            ${this.renderKeybindingRow('Move Down', 'moveDown', defaultKb.moveDown, kb.moveDown)}
+            ${this.renderKeybindingRow('Move Up', 'moveUp', defaultKb.moveUp, kb.moveUp)}
+            ${this.renderKeybindingRow('Move Right', 'moveRight', defaultKb.moveRight, kb.moveRight)}
+          </div>
+
+          <div class="config-section">
+            <div class="config-section-title">Grid Movement</div>
+            ${this.renderKeybindingRow('Grid Left', 'gridLeft', defaultKb.gridLeft, kb.gridLeft)}
+            ${this.renderKeybindingRow('Grid Down', 'gridDown', defaultKb.gridDown, kb.gridDown)}
+            ${this.renderKeybindingRow('Grid Up', 'gridUp', defaultKb.gridUp, kb.gridUp)}
+            ${this.renderKeybindingRow('Grid Right', 'gridRight', defaultKb.gridRight, kb.gridRight)}
+          </div>
+
+          <div class="config-section">
+            <div class="config-section-title">Sigil Movement (Forward)</div>
+            ${this.renderKeybindingRow('Sigil 1 Forward', 'sigil1Forward', defaultKb.sigil1Forward, kb.sigil1Forward)}
+            ${this.renderKeybindingRow('Sigil 2 Forward', 'sigil2Forward', defaultKb.sigil2Forward, kb.sigil2Forward)}
+            ${this.renderKeybindingRow('Sigil 3 Forward', 'sigil3Forward', defaultKb.sigil3Forward, kb.sigil3Forward)}
+            ${this.renderKeybindingRow('Sigil 4 Forward', 'sigil4Forward', defaultKb.sigil4Forward, kb.sigil4Forward)}
+          </div>
+
+          <div class="config-section">
+            <div class="config-section-title">Sigil Movement (Backward)</div>
+            ${this.renderKeybindingRow('Sigil 1 Backward', 'sigil1Backward', defaultKb.sigil1Backward, kb.sigil1Backward)}
+            ${this.renderKeybindingRow('Sigil 2 Backward', 'sigil2Backward', defaultKb.sigil2Backward, kb.sigil2Backward)}
+            ${this.renderKeybindingRow('Sigil 3 Backward', 'sigil3Backward', defaultKb.sigil3Backward, kb.sigil3Backward)}
+            ${this.renderKeybindingRow('Sigil 4 Backward', 'sigil4Backward', defaultKb.sigil4Backward, kb.sigil4Backward)}
+          </div>
+        `;
+      },
+
+      renderKeybindingRow(label, key, defaultVal, currentVal) {
+        return `
+          <div class="keybinding-row">
+            <span class="keybinding-action">${label}</span>
+            <span class="keybinding-default">${defaultVal}</span>
+            <input type="text" class="keybinding-custom" id="kb-${key}" value="${currentVal || ''}" maxlength="1">
+          </div>
+        `;
+      },
+
+      applySettings() {
+        // Read gameplay settings
+        this.config.gameplay.countdownTimer = parseInt(document.getElementById('cfg-countdownTimer').value) || 30;
+        this.config.gameplay.lineOfSight = parseInt(document.getElementById('cfg-lineOfSight').value) || 0;
+        this.config.gameplay.sigilLetters = document.getElementById('cfg-sigilLetters').value || 'asdf';
+        this.config.gameplay.obstacleDensity = parseInt(document.getElementById('cfg-obstacleDensity').value) || 10;
+        this.config.gameplay.sigilDensity = parseInt(document.getElementById('cfg-sigilDensity').value) || 2;
+        this.config.gameplay.minPortalPairs = Math.min(Math.max(1, parseInt(document.getElementById('cfg-portalPairs').value) || 2), 6);
+        this.config.gameplay.maxCoins = parseInt(document.getElementById('cfg-maxCoins').value) || 10;
+        this.config.gameplay.coinSpawnFrequency = parseInt(document.getElementById('cfg-coinSpawnFrequency').value) || 4;
+        this.config.gameplay.volatileInitialCounter = parseInt(document.getElementById('cfg-volatileInitialCounter').value) || 5;
+        this.config.gameplay.volatileDecrementalStep = parseInt(document.getElementById('cfg-volatileDecrementalStep').value) || 1;
+        this.config.gameplay.volatileSpawnFrequency = parseInt(document.getElementById('cfg-volatileSpawnFrequency').value) || 8;
+        this.config.gameplay.overchargeCounter = parseInt(document.getElementById('cfg-overchargeCounter').value) || 5;
+        this.config.gameplay.maxBonusScore = parseInt(document.getElementById('cfg-maxBonusScore').value) || 5;
+
+        // Read keybindings
+        const keybindingKeys = Object.keys(DEFAULT_CONFIG.keybindings);
+        keybindingKeys.forEach(key => {
+          const input = document.getElementById(`kb-${key}`);
+          if (input) {
+            this.config.keybindings[key] = input.value || DEFAULT_CONFIG.keybindings[key];
+          }
+        });
+
+        this.saveConfig();
+        this.closeSettings();
+        this.render();
+      },
+
+      resetToDefaults() {
+        this.config = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+        this.renderSettingsContent();
+      },
+
+      selectSlot(slot) {
+        this.currentSlot = slot;
+        this.loadConfig();
+        this.renderSettingsContent();
+
+        // Update slot button UI
+        document.querySelectorAll('.slot-btn').forEach(btn => {
+          btn.classList.toggle('active', parseInt(btn.dataset.slot) === slot);
+        });
+      },
+
+      // ============================================
+      // EVENT HANDLERS
+      // ============================================
+      setupEventListeners() {
+        // Keyboard input
+        document.addEventListener('keydown', (e) => this.handleKeydown(e));
+
+        // Settings modal
+        document.getElementById('settings-btn').addEventListener('click', () => this.openSettings());
+        document.querySelector('.modal-close').addEventListener('click', () => this.closeSettings());
+        document.getElementById('apply-btn').addEventListener('click', () => this.applySettings());
+        document.getElementById('cancel-btn').addEventListener('click', () => this.closeSettings());
+        document.getElementById('reset-defaults-btn').addEventListener('click', () => this.resetToDefaults());
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const tab = e.target.dataset.tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            e.target.classList.add('active');
+            document.getElementById(`tab-${tab}`).classList.add('active');
+          });
+        });
+
+        // Save slots
+        document.querySelectorAll('.slot-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            this.selectSlot(parseInt(e.target.dataset.slot));
+          });
+        });
+      },
+
+      handleKeydown(e) {
+        // Check if modal is open
+        if (document.getElementById('settings-modal').classList.contains('active')) {
+          if (e.key === 'Escape') {
+            this.closeSettings();
+          }
+          return;
+        }
+
+        const key = e.key;
+        const kb = this.config.keybindings;
+        const sigilLetters = this.config.gameplay.sigilLetters;
+
+        // Reserved keys
+        switch (key) {
+          case '\\':
+            e.preventDefault();
+            this.startGame();
+            return;
+          case 'Backspace':
+            e.preventDefault();
+            this.regenerateDynamicLevel();
+            return;
+          case '[':
+            e.preventDefault();
+            if (this.state === GameState.OUT_OF_GAME) {
+              this.previousLevel();
+            }
+            return;
+          case ']':
+            e.preventDefault();
+            if (this.state === GameState.OUT_OF_GAME) {
+              this.nextLevel();
+            }
+            return;
+          case 'Escape':
+            e.preventDefault();
+            this.openSettings();
+            return;
+          case '`':
+            e.preventDefault();
+            this.debugMode = !this.debugMode;
+            console.log('Debug mode:', this.debugMode ? 'ON' : 'OFF');
+            this.render();
+            return;
+        }
+
+        // Only process movement if we can play
+        if (this.state === GameState.OUT_OF_GAME && this.currentLevel.type !== 'demo') {
+          return;
+        }
+
+        // Basic movement
+        if (key === kb.moveLeft) {
+          e.preventDefault();
+          this.move('left');
+        } else if (key === kb.moveDown) {
+          e.preventDefault();
+          this.move('down');
+        } else if (key === kb.moveUp) {
+          e.preventDefault();
+          this.move('up');
+        } else if (key === kb.moveRight) {
+          e.preventDefault();
+          this.move('right');
+        }
+        // Sigil movement forward
+        else if (key === kb.sigil1Forward && sigilLetters.length >= 1) {
+          e.preventDefault();
+          this.moveSigil(sigilLetters[0], true);
+        } else if (key === kb.sigil2Forward && sigilLetters.length >= 2) {
+          e.preventDefault();
+          this.moveSigil(sigilLetters[1], true);
+        } else if (key === kb.sigil3Forward && sigilLetters.length >= 3) {
+          e.preventDefault();
+          this.moveSigil(sigilLetters[2], true);
+        } else if (key === kb.sigil4Forward && sigilLetters.length >= 4) {
+          e.preventDefault();
+          this.moveSigil(sigilLetters[3], true);
+        }
+        // Sigil movement backward
+        else if (key === kb.sigil1Backward && sigilLetters.length >= 1) {
+          e.preventDefault();
+          this.moveSigil(sigilLetters[0], false);
+        } else if (key === kb.sigil2Backward && sigilLetters.length >= 2) {
+          e.preventDefault();
+          this.moveSigil(sigilLetters[1], false);
+        } else if (key === kb.sigil3Backward && sigilLetters.length >= 3) {
+          e.preventDefault();
+          this.moveSigil(sigilLetters[2], false);
+        } else if (key === kb.sigil4Backward && sigilLetters.length >= 4) {
+          e.preventDefault();
+          this.moveSigil(sigilLetters[3], false);
+        }
+      }
+    };
+
+    // ============================================
+    // INITIALIZE GAME
+    // ============================================
+    document.addEventListener('DOMContentLoaded', () => {
+      Game.init();
+    });
+  </script>
+</body>
+</html>
