@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>職涯專案時間軸</title>
+  <title>Career Project Timeline</title>
   <style>
     * {
       box-sizing: border-box;
@@ -13,7 +13,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background: #f5f5f5;
       color: #333;
       line-height: 1.6;
@@ -246,12 +246,12 @@
 <body>
   <header>
     <div class="lang-switch">
-      <a href="en/">EN</a>
+      <a href="../">ZH</a>
     </div>
-    <h1>職涯專案時間軸</h1>
+    <h1>Career Project Timeline</h1>
     <div class="toggle-container">
       <input type="checkbox" id="showAll">
-      <label for="showAll">顯示所有專案（包含次要專案）</label>
+      <label for="showAll">Show all projects (including minor projects)</label>
     </div>
   </header>
 
@@ -266,11 +266,11 @@
         <!-- r=3 projects -->
         <div class="project significance-3" data-r="3">
           <div class="project-header">
-            <span class="project-title">跨平台資料轉移（部落格文章）</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">Cross Platform Data Transfer (Blog Posts)</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">RPA</div>
-          <div class="project-desc">自動化搬遷 500 篇部落格文章，整合 Google Photos API 處理圖片託管</div>
+          <div class="project-desc">Automated migration of 500 blog posts, integrated Google Photos API for image hosting</div>
           <div class="project-tech">
             <span class="tech-tag">AutoIt</span>
             <span class="tech-tag">C# Lib</span>
@@ -281,40 +281,26 @@
 
         <div class="project significance-3" data-r="3">
           <div class="project-header">
-            <span class="project-title">跨平台資料轉移（悠遊卡）</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">Cross Platform Data Transfer (EasyCard)</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">RPA</div>
-          <div class="project-desc">從悠遊卡後台系統批次匯出資料，包含驗證碼自動識別機制</div>
+          <div class="project-desc">Batch data export from EasyCard admin panel, including automated CAPTCHA recognition</div>
           <div class="project-tech">
             <span class="tech-tag">AutoIt</span>
             <span class="tech-tag">C# Lib</span>
-            <span class="tech-tag">CAPTCHA 破解</span>
+            <span class="tech-tag">CAPTCHA Hack</span>
             <span class="tech-tag">bitcoin</span>
           </div>
         </div>
 
         <div class="project significance-3" data-r="3">
           <div class="project-header">
-            <span class="project-title">養豬場電子表單</span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category">web / internal</div>
-          <div class="project-desc">運用元程式設計動態產生表單欄位，第一個接案經驗</div>
-          <div class="project-tech">
-            <span class="tech-tag">Vue.js</span>
-            <span class="tech-tag">CLI</span>
-            <span class="tech-tag">字串處理</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">Infinitode 遊戲解析器</span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title">Infinitode Parser</span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category">RPA / data</div>
-          <div class="project-desc">透過 OCR 擷取遊戲截圖數據，自動整理至試算表進行分析</div>
+          <div class="project-desc">Extracted game screenshot data via OCR, automatically organized into spreadsheets for analysis</div>
           <div class="project-tech">
             <span class="tech-tag">GCP OCR</span>
             <span class="tech-tag">Google Spreadsheet</span>
@@ -325,11 +311,11 @@
         <!-- r=2 projects -->
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">TSC Fit 管理工具</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">TSC Fit Admin Tool</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">CLI / internal</div>
-          <div class="project-desc">開發 CLI 任務排程工具，整合第三方 API 自動執行定期作業</div>
+          <div class="project-desc">Developed CLI task scheduler tool, integrated 3rd party API for automated routine tasks</div>
           <div class="project-tech">
             <span class="tech-tag">EF</span>
             <span class="tech-tag">CLI</span>
@@ -339,11 +325,11 @@
 
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">企業入口網站 4.0</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">EIP 4.0</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">web / internal</div>
-          <div class="project-desc">重新設計企業入口網站，實作響應式介面與客製化儀表板</div>
+          <div class="project-desc">Redesigned enterprise portal with responsive interface and custom dashboard</div>
           <div class="project-tech">
             <span class="tech-tag">ASP.NET WebForm</span>
             <span class="tech-tag">jQuery</span>
@@ -352,11 +338,11 @@
 
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">內容管理系統 2.0</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">CMS 2.0</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">web / cms</div>
-          <div class="project-desc">開發新版 CMS 系統，支援響應式設計與自訂版面配置</div>
+          <div class="project-desc">Developed new CMS system with responsive design and custom layout configuration</div>
           <div class="project-tech">
             <span class="tech-tag">ASP.NET MVC</span>
             <span class="tech-tag">ADO.NET</span>
@@ -365,11 +351,11 @@
 
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">TSC Fit 健身系統</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">TSC Fit</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">web / internal</div>
-          <div class="project-desc">建置健身數據儀表板，進行資料庫與前端效能優化</div>
+          <div class="project-desc">Built fitness data dashboard with database and frontend performance optimization</div>
           <div class="project-tech">
             <span class="tech-tag">ASP.NET WebForm</span>
             <span class="tech-tag">jQuery</span>
@@ -380,11 +366,11 @@
         <!-- r=1 projects -->
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">VBA 重構專案</span>
-            <span class="badge badge-brown">既有專案</span>
+            <span class="project-title">VBA Refactor</span>
+            <span class="badge badge-brown">Existing Project</span>
           </div>
           <div class="project-category">vba / internal</div>
-          <div class="project-desc">重構遺留 VBA 程式碼，釐清並文件化業務需求</div>
+          <div class="project-desc">Refactored legacy VBA code, clarified and documented business requirements</div>
           <div class="project-tech">
             <span class="tech-tag">VBA</span>
           </div>
@@ -392,11 +378,11 @@
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">電子表單系統</span>
-            <span class="badge badge-brown">既有專案</span>
+            <span class="project-title">E-Form System</span>
+            <span class="badge badge-brown">Existing Project</span>
           </div>
           <div class="project-category">web / internal</div>
-          <div class="project-desc">維護電子表單系統，整合 ERP 與第三方函式庫</div>
+          <div class="project-desc">Maintained e-form system, integrated ERP and 3rd party libraries</div>
           <div class="project-tech">
             <span class="tech-tag">ASP.NET WebForm</span>
           </div>
@@ -404,11 +390,11 @@
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">日周報系統</span>
-            <span class="badge badge-brown">既有專案</span>
+            <span class="project-title">MyReport</span>
+            <span class="badge badge-brown">Existing Project</span>
           </div>
           <div class="project-category">web / internal</div>
-          <div class="project-desc">開發日周報系統，整合 CKEditor 富文本編輯功能</div>
+          <div class="project-desc">Developed daily/weekly report system, integrated CKEditor rich text editing</div>
           <div class="project-tech">
             <span class="tech-tag">ASP.NET WebForm</span>
             <span class="tech-tag">MVC</span>
@@ -418,23 +404,23 @@
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">VBA 甘特圖</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">VBA Gantt Chart</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">pm / internal</div>
-          <div class="project-desc">使用 VBA 繪圖功能開發甘特圖產生工具</div>
+          <div class="project-desc">Developed Gantt chart generator using VBA drawing features</div>
           <div class="project-tech">
-            <span class="tech-tag">VBA 繪圖</span>
+            <span class="tech-tag">VBA Drawing</span>
           </div>
         </div>
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">SSO AD 帳號同步</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">SSO AD Account Sync</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">RPA / data</div>
-          <div class="project-desc">排查 SSO 與 Active Directory 帳號同步問題，制定標準流程</div>
+          <div class="project-desc">Troubleshot SSO and Active Directory account sync issues, defined standard workflow</div>
           <div class="project-tech">
             <span class="tech-tag">AD</span>
             <span class="tech-tag">ASP.NET</span>
@@ -444,11 +430,11 @@
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">數位學習自動點擊工具</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">E-Learning Auto-Click Tool</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">RPA</div>
-          <div class="project-desc">自動化數位學習平台的課程進度點擊</div>
+          <div class="project-desc">Automated course progress clicking on e-learning platform</div>
           <div class="project-tech">
             <span class="tech-tag">AutoIt</span>
           </div>
@@ -456,11 +442,11 @@
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">104人力銀行解析器</span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title">104 Job Bank Parser</span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category">web / parser</div>
-          <div class="project-desc">第一個網頁爬蟲專案，解析 104 人力銀行職缺資料</div>
+          <div class="project-desc">First web scraping project, parsed job listings from 104 Job Bank</div>
           <div class="project-tech">
             <span class="tech-tag">CLI</span>
             <span class="tech-tag">HttpAgilityPack</span>
@@ -469,11 +455,11 @@
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">RTF 格式轉換器</span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title">RTF Transformer</span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category">CLI / data</div>
-          <div class="project-desc">解析 RTF 格式文件並轉換為純文字</div>
+          <div class="project-desc">Parsed RTF format documents and converted to plain text</div>
           <div class="project-tech">
             <span class="tech-tag">CLI</span>
           </div>
@@ -491,11 +477,11 @@
         <!-- r=3 projects -->
         <div class="project significance-3" data-r="3">
           <div class="project-header">
-            <span class="project-title">ELK 日誌系統</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">ELK Logging System</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">oss</div>
-          <div class="project-desc">建置 ELK Stack 集中式日誌平台，支援多服務即時監控與 Kibana 查詢</div>
+          <div class="project-desc">Built ELK Stack centralized logging platform, supporting multi-service real-time monitoring and Kibana queries</div>
           <div class="project-tech">
             <span class="tech-tag">Linux</span>
             <span class="tech-tag">Docker Swarm</span>
@@ -508,11 +494,11 @@
 
         <div class="project significance-3" data-r="3">
           <div class="project-header">
-            <span class="project-title">機器人偵測報表</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">Bot Capturing Report</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">data</div>
-          <div class="project-desc">開發可疑帳號偵測系統，使用位元旗標標記異常行為並開發旗標查詢器</div>
+          <div class="project-desc">Developed suspicious account detection system using bit flags to mark anomalous behavior with flag query tool</div>
           <div class="project-tech">
             <span class="tech-tag">T-SQL</span>
             <span class="tech-tag">.NET</span>
@@ -524,11 +510,11 @@
         <!-- r=2 projects -->
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">原生手機應用 API 封裝</span>
-            <span class="badge badge-brown">既有專案</span>
+            <span class="project-title">API Wrapper for Native App</span>
+            <span class="badge badge-brown">Existing Project</span>
           </div>
           <div class="project-category">api</div>
-          <div class="project-desc">封裝後端邏輯 (帳務、賽果、會員)，架設 API 供原生手機應用使用</div>
+          <div class="project-desc">Wrapped backend logic (statement, result, and member), set up API for native mobile app consumption</div>
           <div class="project-tech">
             <span class="tech-tag">C# .NET</span>
           </div>
@@ -536,25 +522,23 @@
 
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">打卡自動化</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">Punch Clock Automation</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category"></div>
-          <div class="project-desc">自動化打卡流程的腳本工具（僅供實驗用途）</div>
+          <div class="project-desc">Script tool for automating punch clock process (experimental use only)</div>
           <div class="project-tech">
             <span class="tech-tag">cmd.exe</span>
           </div>
         </div>
 
-        <!-- r=1 projects -->
-
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">網站組態設定查詢工具</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">Site Config Query Tool</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">cli</div>
-          <div class="project-desc">開發 CLI 工具反向查詢網站組態設定檔</div>
+          <div class="project-desc">Developed CLI tool for inverted search of site configuration files</div>
           <div class="project-tech">
             <span class="tech-tag">C# .NET CLI</span>
           </div>
@@ -562,11 +546,11 @@
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">Postman 整合測試</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">Postman Integration Test</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">test</div>
-          <div class="project-desc">撰寫 Postman 腳本進行 API 整合測試</div>
+          <div class="project-desc">Wrote Postman scripts for API integration testing</div>
           <div class="project-tech">
             <span class="tech-tag">Postman</span>
             <span class="tech-tag">JavaScript</span>
@@ -575,11 +559,11 @@
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">VSCode Markdown 擴充套件</span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title">VSCode Markdown Extension</span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category">ext</div>
-          <div class="project-desc">開發 VSCode 擴充套件優化 Markdown 筆記體驗</div>
+          <div class="project-desc">Developed VSCode extension to improve Markdown note-taking UX</div>
           <div class="project-tech">
             <span class="tech-tag">TypeScript</span>
             <span class="tech-tag">Redux</span>
@@ -588,11 +572,11 @@
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">UM 服務更新自動化</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">UM Services Update Automation</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category">devops</div>
-          <div class="project-desc">自動化服務更新流程，部署時間從 50 分鐘縮短至 5 分鐘</div>
+          <div class="project-desc">Automated service update process, reduced deployment time from 50 minutes to 5 minutes</div>
           <div class="project-tech">
             <span class="tech-tag">PowerShell</span>
           </div>
@@ -610,11 +594,11 @@
         <!-- r=3 projects -->
         <div class="project significance-3" data-r="3">
           <div class="project-header">
-            <span class="project-title">物流管理平台</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">Logistic Admin Platform</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category"></div>
-          <div class="project-desc">全端開發物流調度系統，涵蓋訂單派送、車輛排程與資源管理功能</div>
+          <div class="project-desc">Full-stack development of logistics dispatch system, covering order dispatch, vehicle scheduling and resource management</div>
           <div class="project-tech">
             <span class="tech-tag">ASP.NET</span>
             <span class="tech-tag">react-admin</span>
@@ -625,11 +609,11 @@
 
         <div class="project significance-3" data-r="3">
           <div class="project-header">
-            <span class="project-title">資安整合專案</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">Cyber Security Integration</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category"></div>
-          <div class="project-desc">整合 KnowBe4 資安意識訓練平台，實作 Webhook 與 SSO 單一登入</div>
+          <div class="project-desc">Integrated KnowBe4 security awareness training platform, implemented Webhook and SSO single sign-on</div>
           <div class="project-tech">
             <span class="tech-tag">webhook</span>
             <span class="tech-tag">Playwright</span>
@@ -640,11 +624,11 @@
 
         <div class="project significance-3" data-r="3">
           <div class="project-header">
-            <span class="project-title"><a href="https://personal-blog-khaki.vercel.app/" target="_blank">第一個技術部落格</a></span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title"><a href="https://personal-blog-khaki.vercel.app/" target="_blank">First Tech Blog</a></span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category"></div>
-          <div class="project-desc">撰寫網頁開發技術文章，從零設計部落格視覺風格與互動體驗</div>
+          <div class="project-desc">Wrote web development technical articles, designed blog visual style and interactive experience from scratch</div>
           <div class="project-tech">
             <span class="tech-tag">JAMstack</span>
             <span class="tech-tag">Next.js</span>
@@ -653,11 +637,11 @@
 
         <div class="project significance-3" data-r="3">
           <div class="project-header">
-            <span class="project-title"><a href="https://marketplace.visualstudio.com/items?itemName=JohnTao.markdown-outline-helper" target="_blank">VSCode 擴充套件 (TDD)</a></span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title"><a href="https://marketplace.visualstudio.com/items?itemName=JohnTao.markdown-outline-helper" target="_blank">VSCode Extension (TDD)</a></span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category"></div>
-          <div class="project-desc">以 TDD 方式開發的 Markdown 大綱輔助工具，已上架 VS Marketplace</div>
+          <div class="project-desc">Markdown outline helper tool developed with TDD, published on VS Marketplace</div>
           <div class="project-tech">
             <span class="tech-tag">TypeScript</span>
             <span class="tech-tag">Redux</span>
@@ -668,11 +652,11 @@
         <!-- r=2 projects -->
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">SMART 學生補助系統</span>
-            <span class="badge badge-brown">既有專案</span>
+            <span class="project-title">SMART Student Subsidy System</span>
+            <span class="badge badge-brown">Existing Project</span>
           </div>
           <div class="project-category"></div>
-          <div class="project-desc">維護學生補助申請系統，處理審核流程與報表功能</div>
+          <div class="project-desc">Maintained student subsidy application system, handled review process and reporting features</div>
           <div class="project-tech">
             <span class="tech-tag">ASP.NET MVC</span>
             <span class="tech-tag">KendoUI</span>
@@ -682,11 +666,11 @@
 
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">電影資料解析器</span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title">Movie Parser</span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category"></div>
-          <div class="project-desc">使用 Playwright 自動爬取電影資料並匯出至試算表</div>
+          <div class="project-desc">Used Playwright to automatically scrape movie data and export to spreadsheets</div>
           <div class="project-tech">
             <span class="tech-tag">C#</span>
             <span class="tech-tag">Playwright</span>
@@ -695,11 +679,11 @@
 
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">591租屋網解析器</span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title">591 Rental Parser</span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category"></div>
-          <div class="project-desc">背景服務持續爬取 591 租屋資訊，儲存至 SQLite 資料庫</div>
+          <div class="project-desc">Background service continuously scraping 591 rental information, stored in SQLite database</div>
           <div class="project-tech">
             <span class="tech-tag">C#</span>
             <span class="tech-tag">SQLite</span>
@@ -721,11 +705,11 @@
         <!-- r=3 projects -->
         <div class="project significance-3" data-r="3">
           <div class="project-header">
-            <span class="project-title"><a href="https://github.com/johntao/design-docs" target="_blank">VIM 按鍵遊戲</a></span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title"><a href="https://github.com/johntao/design-docs" target="_blank">VIM Keys Game</a></span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category">game</div>
-          <div class="project-desc">透過遊戲化方式學習 VIM 快捷鍵，使用 SDD 與 AI 輔助開發的互動式網頁遊戲</div>
+          <div class="project-desc">Learn VIM shortcuts through gamification, interactive web game developed with SDD and AI assistance</div>
           <div class="project-tech">
             <span class="tech-tag">Claude-Code</span>
             <span class="tech-tag">plain-HTML</span>
@@ -735,11 +719,11 @@
 
         <div class="project significance-3" data-r="3">
           <div class="project-header">
-            <span class="project-title"><a href="https://johntao.dev" target="_blank">個人部落格</a></span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title"><a href="https://johntao.dev" target="_blank">Personal Blog</a></span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category">blog</div>
-          <div class="project-desc">累積 30 篇技術文章，探索 AI 輔助寫作的可能性</div>
+          <div class="project-desc">Accumulated 30 technical articles, exploring possibilities of AI-assisted writing</div>
           <div class="project-tech">
             <span class="tech-tag">Claude-Code</span>
             <span class="tech-tag">Supabase</span>
@@ -751,11 +735,11 @@
         <!-- r=2 projects -->
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">一鍵下單機器人</span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title">One-Shot Ordering Bot</span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category">bot</div>
-          <div class="project-desc">使用 Playwright 自動化電影下單流程</div>
+          <div class="project-desc">Used Playwright to automate movie ticket ordering process</div>
           <div class="project-tech">
             <span class="tech-tag">Claude-Code</span>
             <span class="tech-tag">Playwright</span>
@@ -764,11 +748,11 @@
 
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">公司網站與名片設計</span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title">Company Website & Business Card</span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category">web</div>
-          <div class="project-desc">運用 AI 工具快速完成公司網站與名片視覺設計</div>
+          <div class="project-desc">Used AI tools to quickly complete company website and business card visual design</div>
           <div class="project-tech">
             <span class="tech-tag">Azure DevOps</span>
             <span class="tech-tag">Astro</span>
@@ -777,11 +761,11 @@
 
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">RTF 解析器重製版</span>
-            <span class="badge badge-sideproj">個人專案</span>
+            <span class="project-title">RTF Parser Rework</span>
+            <span class="badge badge-sideproj">Side Project</span>
           </div>
           <div class="project-category">web</div>
-          <div class="project-desc">重新設計 RTF 解析器 (2020)，程式碼精簡為原版的十分之一</div>
+          <div class="project-desc">Redesigned RTF parser (2020), code reduced to one-tenth of original version</div>
           <div class="project-tech">
             <span class="tech-tag">.NET 10</span>
             <span class="tech-tag">Claude-Code</span>
@@ -790,11 +774,11 @@
 
         <div class="project significance-2 hidden" data-r="2">
           <div class="project-header">
-            <span class="project-title">LangChain 教學</span>
-            <span class="badge badge-brown">既有專案</span>
+            <span class="project-title">LangChain Teaching</span>
+            <span class="badge badge-brown">Existing Project</span>
           </div>
           <div class="project-category"></div>
-          <div class="project-desc">首次擔任講師，教授 LangChain 與 AI 應用開發</div>
+          <div class="project-desc">First time as instructor, teaching LangChain and AI application development</div>
           <div class="project-tech">
             <span class="tech-tag">Python</span>
             <span class="tech-tag">Colab</span>
@@ -806,11 +790,11 @@
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">綠界金流模組升級</span>
-            <span class="badge badge-brown">既有專案</span>
+            <span class="project-title">ECPay Module Upgrade</span>
+            <span class="badge badge-brown">Existing Project</span>
           </div>
           <div class="project-category"></div>
-          <div class="project-desc">升級綠界金流模組，首次使用 Python 開發</div>
+          <div class="project-desc">Upgraded ECPay payment module, first time using Python for development</div>
           <div class="project-tech">
             <span class="tech-tag">Python</span>
           </div>
@@ -818,21 +802,21 @@
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">銷售流程設計</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">Sales Workflow Design</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category"></div>
-          <div class="project-desc">設計並文件化銷售工作流程</div>
+          <div class="project-desc">Designed and documented sales workflow</div>
           <div class="project-tech"></div>
         </div>
 
         <div class="project significance-1 hidden" data-r="1">
           <div class="project-header">
-            <span class="project-title">流程設計與實作</span>
-            <span class="badge badge-green">新專案</span>
+            <span class="project-title">Workflow Design & Implementation</span>
+            <span class="badge badge-green">New Project</span>
           </div>
           <div class="project-category"></div>
-          <div class="project-desc">在 AWS 上建置 20 個 Odoo ERP 實例</div>
+          <div class="project-desc">Built 20 Odoo ERP instances on AWS</div>
           <div class="project-tech">
             <span class="tech-tag">CloudPepper</span>
             <span class="tech-tag">AWS</span>
