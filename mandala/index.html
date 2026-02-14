@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mandala Chart</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: monospace;
+      background: #fafafa;
+      padding: 10px;
+      margin: 0;
+      height: 100vh;
+    }
+
+    .mc-layout {
+      display: flex;
+      flex: 1;
+      height: 100%;
+      gap: 10px;
+    }
+
+    mc-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: repeat(9, 1fr);
+      gap: 2px;
+      border: 2px solid #333;
+      background: #333;
+      flex: 1;
+      aspect-ratio: 1 / 1;
+      max-height: 100%;
+    }
+
+    grid-row {
+      display: grid;
+      grid-column: span 3;
+      grid-row: span 3;
+      grid-template-columns: subgrid;
+      grid-template-rows: subgrid;
+      gap: 2px;
+      background: #ddd;
+    }
+  </style>
+</head>
+
+<body>
+  <mc-app></mc-app>
+  <script type="module" src="main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+# English data
+
+## Era 1 (TSC Topco) (2016-2020)
+
+| r   | t1       | t2  | t3       | title                                    | desc                                                               | tech                                     |
+| --- | -------- | --- | -------- | ---------------------------------------- | ------------------------------------------------------------------ | ---------------------------------------- |
+| 3   | green    | RPA |          | Cross platform data transfer blog post   | 500 posts transfer from platform A to platform B;use google photos | AutoIt;C# Lib;Google Photos;Google API   |
+| 3   | green    | RPA |          | Cross platform data transfer ezcard data | EasyCard admin panel;export data;CAPTCHA hack                      | AutoIt;C# Lib;3rd CAPTCHA hack;bitcoin   |
+| 3   | sideproj | RPA | data     | Infinitode Parser                        | game stats analysis                                                | GCP OCR;Google Spreadsheet;Google Photos |
+| 2   | green    | CLI | internal | TSC Fit admin tool                       | Tash scheduler;integrate 3rd API                                   | EF;CLI;LINQ                              |
+| 2   | green    | web | internal | EIP 4.0                                  | custom panel;RWD;frontend heavy                                    | ASP.NET WebForm;jQuery                   |
+| 2   | green    | web | cms      | CMS 2.0                                  | custom panel;RWD;frontend heavy                                    | ASP.NET MVC;ADO.NET                      |
+| 2   | green    | web | internal | TSC Fit                                  | dashboard;performance tuning                                       | ASP.NET webform;jQuery;EF                |
+| 1   | brown    | vba | internal | VBA Refactor Andy Hsieh                  | refactor;understand the requirement                                | VBA                                      |
+| 1   | brown    | web | internal | Eform                                    | core logic keep changing;ERP and 3rd lib                           | ASP.NET WebForm                          |
+| 1   | brown    | web | internal | MyReport                                 | core logic keep changing;front-end focus                           | ASP.NET WebForm, MVC;ckeditor            |
+| 1   | green    | pm  | internal | VBA Gantt                                | internal usage                                                     | VBA drawing chart                        |
+| 1   | green    | RPA | data     | SSO AD EIP Account Sync                  | troubleshoot;workflow definition                                   | AD;ASP.NET;TAM                           |
+| 1   | green    | RPA |          | Elearning auto-click                     | nice little tool                                                   | autoit                                   |
+| 1   | sideproj | web | parser   | 104 Parser                               | first parsing project                                              | CLI;HttpAgilityPack                      |
+| 1   | sideproj | CLI | data     | RTF Transformer                          | RTF text parsing                                                   | CLI                                      |
+
+## Era 2 (ONElab) (2020-2022)
+
+| r   | t1       | t2     | t3  | title                             | desc                                           | tech                                              |
+| --- | -------- | ------ | --- | --------------------------------- | ---------------------------------------------- | ------------------------------------------------- |
+| 3   | green    | oss    |     | ELK                               | ELK logging for internal used                  | Linux Docker Swarm Docker-Compose ELK Nlog Lucene |
+| 3   | green    | data   |     | bot capturing report              | consume suspects, call t-sql to mark them      | T-SQL .NET dataurl bit-flags                      |
+| 2   | brown    | api    |     | API Wrapper for native-app client | Statement, Result and Member module            |                                                   |
+| 2   | green    |        |     | Punch clock automation            | don’t recommend it                             | cmd.exe                                           |
+| 1   | green    | cli    |     | query site stuff                  | inverted search site-config                    | C# .NET CLI                                       |
+| 1   | green    | web    |     | config signalR                    | ON and OFF a specific config                   | ASP.NET Blazor                                    |
+| 1   | green    | test   |     | postman integration test          | integration tests on API wrapper               | postman javascript                                |
+| 1   | sideproj | ext    |     | vscode md ext                     | improve note taking UX                         | TypeScript Redux                                  |
+| 1   | green    | devops |     | UM services update automation     | from 50min to 5min                             | powershell                                        |
+
+## Era 3 (LogiKCo) (2022-2024)
+
+| r   | t1       | t2  | t3  | title                   | desc                                                     | tech                                      |
+| --- | -------- | --- | --- | ----------------------- | -------------------------------------------------------- | ----------------------------------------- |
+| 3   | green    |     |     | Logistic admin platform | dispatch orders and resource management                  | ASP.NET react-admin KendoUI MS-SQL        |
+| 3   | green    |     |     | cyber security intl     | integrate KnowBe4 service into SMART;status sync         | webhook playwright MS-SQL SSO             |
+| 2   | brown    |     |     | SMART                   | students complement application                          | ASP.NET MVC KendoUI MS-SQL                |
+| 3   | sideproj |     |     | blog                    | talks about web development, spent time on visual design | jamstack nextjs                           |
+| 3   | sideproj |     |     | VSCode Ext TDD          | task management and outliner helper                      | typescript redux TDD                      |
+| 2   | sideproj |     |     | Movie Parser            | parse data into spreadsheet                              | C# playwright                             |
+| 2   | sideproj |     |     | 591 Parser              | parse data into sqlite                                   | C# sqlite daemon playwright headless-mode |
+
+## Era 4 (Gap Year) (2025)
+Here's the requirements
+| r   | t1       | t2   | t3  | title                         | desc                                  | tech                                            |
+| --- | -------- | ---- | --- | ----------------------------- | ------------------------------------- | ----------------------------------------------- |
+| 3   | sideproj | game |     | VIM Keys Game                 | ongoing game project                  | Claude-Code plain-HTML                          |
+| 3   | sideproj | blog |     | personal blog x30 writing     | not so sustainable                    | Claude-code                                     |
+| 2   | sideproj | bot  |     | One-shot ordering bot         | first attempt placing orders by bot   | Claude-code playwright                          |
+| 2   | sideproj | web  |     | company-website logo biz-card | AI tools handle it very well          | Azure-devops astro                              |
+| 2   | sideproj | web  |     | 2020 RTF parser rework        | 10 times simpler                      | .NET-10 claude-code                             |
+| 1   | sideproj | pkm  |     | Word Count                    | obsolete                              | bash                                            |
+| 1   | sideproj | pkm  |     | KB Catalog                    | almost obsolete                       | Plain-text                                      |
+| 1   | sideproj | web  |     | blog design                   | simplicity FTW                        | astro claude-code                               |
+| 2   | brown    |      |     | teach LangChain               | first time teaching                   | python colab lang-chain                         |
+| 1   | sideproj | pkm  |     | mandala                       | DWM in logseq. Not so responsive      |                                                 |
+| 1   | sideproj | pkm  |     | gantt chart                   | start from scratch is better than oss | Many oss tools                                  |
+| 1   | brown    |      |     | ecpay module upgrade          | ecpay, python first impression        | python                                          |
+| 1   | green    |      |     | sales workflow                | define sales workflow                 |                                                 |
+| 1   | green    |      |     | automation workflow           | Create 20 Odoo instances manually     | cloudpepper AWS                                 |
+| 1   | green    |      |     | new blog based on Astro       | discuss things about LogSeq           | Astro Starlight JAMstack Cloudflare GitHub-Page |
