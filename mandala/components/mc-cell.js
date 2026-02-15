@@ -14,6 +14,8 @@ export default class McCell extends HTMLElement {
   padding: 4px;
   font-size: 12px;
   overflow: hidden;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
 }
 :host(:focus) {
   outline: 2px solid #0066cc;
@@ -77,6 +79,8 @@ export default class McCell extends HTMLElement {
 
   connectedCallback() {
     this.setAttribute('tabindex', '0');
+
+    this.addEventListener('contextmenu', (e) => e.preventDefault());
 
     this.addEventListener('mousedown', () => {
       this._wasFocused = document.activeElement === this;

@@ -46,6 +46,19 @@
       gap: 2px;
       background: #ddd;
     }
+
+    @media (max-height: 920px) {
+      body {
+        height: auto;
+        overflow: auto;
+      }
+
+      mc-grid {
+        aspect-ratio: unset;
+        max-height: none;
+        grid-template-rows: repeat(9, minmax(100px, 1fr));
+      }
+    }
   </style>
 </head>
 

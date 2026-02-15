@@ -5,24 +5,44 @@ export default class McSidePanel extends HTMLElement {
     this.shadowRoot.innerHTML = `
 <style>
 :host {
+  position: relative;
   display: block;
   width: 280px;
   min-width: 280px;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 6px;
-  overflow: hidden;
+  overflow: visible;
   transition: width 0.2s, min-width 0.2s, opacity 0.2s;
 }
 :host(.collapsed) {
   width: 0;
   min-width: 0;
   border: none;
-  opacity: 0;
-  overflow: hidden;
+}
+.toggle-btn {
+  position: absolute;
+  left: -28px;
+  top: 8px;
+  width: 24px;
+  height: 24px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 22px;
+  text-align: center;
+  padding: 0;
+  z-index: 1;
+  color: #666;
+}
+.toggle-btn:hover {
+  background: #f0f0f0;
 }
 .panel-content {
   padding: 16px;
+  overflow: hidden;
   overflow-y: auto;
   height: 100%;
   box-sizing: border-box;
@@ -102,6 +122,7 @@ kbd {
   background: #f5f5f5;
 }
 </style>
+<button class="toggle-btn">◀</button>
 <div class="panel-content">
   <div class="section">
     <h3>Editing</h3>
@@ -141,7 +162,8 @@ kbd {
   <div class="section">
     <h3>Other</h3>
     <div class="shortcut-list">
-      <div class="shortcut-item"><div class="keys"><kbd>?</kbd></div><div>Toggle this panel</div></div>
+      <div class="shortcut-item"><div class="keys"><kbd>]</kbd></div><div>Toggle this panel</div></div>
+      <div class="shortcut-item"><div class="keys"><kbd>?</kbd></div><div>Toggle the help text</div></div>
       <div class="shortcut-item"><div class="keys"><kbd>Esc</kbd></div><div>Close popup / cancel edit</div></div>
     </div>
   </div>
@@ -159,6 +181,10 @@ kbd {
 </div>
     `;
     this._expanded = true;
+    this._toggleBtn = this.shadowRoot.querySelector('.toggle-btn');
+    this._panelContent = this.shadowRoot.querySelector('.panel-content');
+
+    this._toggleBtn.addEventListener('click', () => this.toggle());
 
     this.shadowRoot.querySelector('.btn-goal').addEventListener('click', () => {
       this.dispatchEvent(new CustomEvent('load-sample', { bubbles: true, detail: { file: 'goal-01.txt' } }));
@@ -174,11 +200,15 @@ kbd {
   expand() {
     this._expanded = true;
     this.classList.remove('collapsed');
+    this._panelContent.style.display = '';
+    this._toggleBtn.textContent = '◀';
   }
 
   collapse() {
     this._expanded = false;
     this.classList.add('collapsed');
+    this._panelContent.style.display = 'none';
+    this._toggleBtn.textContent = '▶';
   }
 
   toggle() {
