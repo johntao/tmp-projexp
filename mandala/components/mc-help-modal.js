@@ -18,9 +18,9 @@ export default class McHelpModal extends HTMLElement {
 .dialog {
   background: #fff;
   border-radius: 8px;
-  width: 560px;
+  width: 600px;
   max-width: 90vw;
-  max-height: 80vh;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
@@ -61,34 +61,44 @@ h2 {
   font-weight: 700;
 }
 h3 {
-  margin: 14px 0 6px 0;
   font-size: 13px;
   font-weight: 600;
   color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 10px;
+h3 {
+  margin-block: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #333;
 }
-td {
-  padding: 3px 0;
-  vertical-align: top;
+p {
+  margin: 6px 0;
 }
-td:first-child {
-  width: 140px;
-  white-space: nowrap;
+.keys {
+  min-width: 100px;
+  display: flex;
+  gap: 3px;
 }
 kbd {
   background: #f0f0f0;
-  padding: 1px 5px;
+  padding: 2px 6px;
   border-radius: 3px;
   border: 1px solid #ccc;
   font-family: monospace;
   font-size: 11px;
 }
-p {
-  margin: 6px 0;
+.key-grid {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 2px;
+  margin-right: 4px;
+  max-width: fit-content;
+}
+.key-grid kbd {
+  width: 20px;
+  text-align: center;
+  padding: 2px;
 }
 .close-hint {
   text-align: center;
@@ -96,6 +106,20 @@ p {
   border-top: 1px solid #eee;
   font-size: 11px;
   color: #999;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 3px;
+  align-items: center;
+}
+.crud {
+  grid-column:1/3;
+}
+@media (max-height: 920px) {
+  .desktop {
+    display: none;
+  }
 }
 </style>
 <div class="overlay">
@@ -155,51 +179,62 @@ p {
 <p>A 9×9 grid tool for goal decomposition and task planning. The center cell is your root goal, surrounded by 8 sub-goals, each with 8 action items.</p>
 
 <h3>Levels & Status</h3>
-<table>
-  <tr><td>Root (center)</td><td>🎯 Always active, no status toggle</td></tr>
-  <tr><td>Level 1 (sub-goals)</td><td>📄 NA → 🎯 Goal</td></tr>
-  <tr><td>Level 2 (tasks)</td><td>📄 NA → 🟩 Now → ✅ Done</td></tr>
-</table>
+<div class="grid">
+  <div class="keys">Root (center)</div><div>🎯 Always active, no status toggle</div>
+  <div class="keys">Level 1 (sub-goals)</div><div>📄 NA → 🎯 Goal</div>
+  <div class="keys">Level 2 (tasks)</div><div>📄 NA → 🟩 Now → ✅ Done</div>
+</div>
 
+<h3>Ring Menu</h3>
+<div class="grid">
+  <div class="crud">💡 Create &nbsp; 🔍 Detail &nbsp; 📝 Inline &nbsp; 🗑 Delete</div>
+  <div class="keys">Click status icon</div><div>Toggle status 📄 🎯 🟩 ✅</div>
+  <div class="keys">Hold + drag</div><div>Swipe to fire command (big screen)</div>
+  <div class="keys">Click cell</div><div>Open ring menu (small screen)</div>
+</div>
+
+<h3>Side Panel</h3>
+<div class="grid">
+  <div class="keys">Save / Load</div><div>Export or import data as text file</div>
+  <div class="keys">Goal / Task / Tpl</div><div>Load demo data or blank template</div>
+  <div class="keys">QWE / DVK</div><div>Switch keyboard layout (QWERTY / Dvorak)</div>
+</div>
+
+<div class="desktop">
 <h3>Editing</h3>
-<table>
-  <tr><td><kbd>u</kbd></td><td>Create record / add child</td></tr>
-  <tr><td><kbd>i</kbd></td><td>Inline edit title</td></tr>
-  <tr><td><kbd>o</kbd> / <kbd>Enter</kbd></td><td>Detail edit (modal)</td></tr>
-  <tr><td><kbd>Del</kbd></td><td>Delete record</td></tr>
-  <tr><td><kbd>y</kbd></td><td>Cycle status</td></tr>
-</table>
+<div class="grid">
+  <div class="keys"><kbd>u</kbd></div><div>Create record / add child</div>
+  <div class="keys"><kbd>i</kbd></div><div>Inline edit title</div>
+  <div class="keys"><kbd>o</kbd> <kbd>Enter</kbd></div><div>Detail edit (modal)</div>
+  <div class="keys"><kbd>Del</kbd></div><div>Delete record</div>
+  <div class="keys"><kbd>y</kbd></div><div>Cycle status</div>
+</div>
 
 <h3>Cell Walk</h3>
-<table>
-  <tr><td><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd> / Arrows</td><td>Move 1 cell</td></tr>
-  <tr><td><kbd>H</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></td><td>Move 3 cells</td></tr>
-</table>
+<div class="grid">
+  <div class="keys"><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd></div><div>Move 1 cell</div>
+  <div class="keys"><kbd>⬅</kbd><kbd>⬇</kbd><kbd>⬆</kbd><kbd>➡</kbd></div><div>Move 1 cell</div>
+  <div class="keys"><kbd>H</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></div><div>Move 3 cells</div>
+</div>
 
 <h3>Inner Jump</h3>
-<table>
-  <tr><td><kbd>w</kbd><kbd>e</kbd><kbd>r</kbd><kbd>s</kbd><kbd>d</kbd><kbd>f</kbd><kbd>x</kbd><kbd>c</kbd><kbd>v</kbd></td><td>Jump within current 3×3 block</td></tr>
-</table>
+<div class="grid">
+  <div class="key-grid"><kbd>w</kbd><kbd>e</kbd><kbd>r</kbd><kbd>s</kbd><kbd>d</kbd><kbd>f</kbd><kbd>x</kbd><kbd>c</kbd><kbd>v</kbd></div>
+  <div>Jump within current 3×3 block</div>
+</div>
 
 <h3>Outer Jump</h3>
-<table>
-  <tr><td><kbd>W</kbd><kbd>E</kbd><kbd>R</kbd><kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd>X</kbd><kbd>C</kbd><kbd>V</kbd></td><td>Jump across 3×3 blocks</td></tr>
-</table>
-
-<h3>Mouse (focused cell only)</h3>
-<table>
-  <tr><td>Click status icon</td><td>Toggle status</td></tr>
-  <tr><td>Click title</td><td>Inline edit</td></tr>
-  <tr><td>Single click elsewhere</td><td>Open detail / create</td></tr>
-  <tr><td>Double click</td><td>Create child</td></tr>
-</table>
-
+<div class="grid">
+  <div class="key-grid"><kbd>W</kbd><kbd>E</kbd><kbd>R</kbd><kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd>X</kbd><kbd>C</kbd><kbd>V</kbd></div>
+  <div>Jump across 3×3 blocks</div>
+</div>
 <h3>Other</h3>
-<table>
-  <tr><td><kbd>]</kbd></td><td>Toggle side panel</td></tr>
-  <tr><td><kbd>?</kbd></td><td>Toggle this help</td></tr>
-  <tr><td><kbd>Esc</kbd></td><td>Close popup / cancel edit</td></tr>
-</table>
+<div class="grid">
+<div class="keys"><kbd>]</kbd></div><div>Toggle side panel</div>
+<div class="keys"><kbd>?</kbd></div><div>Toggle this help</div>
+<div class="keys"><kbd>Esc</kbd></div><div>Close popup / cancel edit</div>
+</div>
+</div>
     `;
   }
 
@@ -209,51 +244,63 @@ p {
 <p>一個 9×9 的網格工具，用於目標分解與任務規劃。中心格是你的核心目標，周圍有 8 個子目標，每個子目標下又有 8 個行動項目。</p>
 
 <h3>層級與狀態</h3>
-<table>
-  <tr><td>根節點（中心）</td><td>🎯 始終啟用，無狀態切換</td></tr>
-  <tr><td>第一層（子目標）</td><td>📄 未啟用 → 🎯 目標</td></tr>
-  <tr><td>第二層（任務）</td><td>📄 未啟用 → 🟩 進行中 → ✅ 完成</td></tr>
-</table>
+<div class="grid">
+  <div class="keys">根節點（中心）</div><div>🎯 始終啟用，無狀態切換</div>
+  <div class="keys">第一層（子目標）</div><div>📄 未啟用 → 🎯 目標</div>
+  <div class="keys">第二層（任務）</div><div>📄 未啟用 → 🟩 進行中 → ✅ 完成</div>
+</div>
 
+<h3>環形選單</h3>
+<div class="grid">
+  <div class="crud">💡 新增 &nbsp; 🔍 詳細 &nbsp; 📝 行內 &nbsp; 🗑 刪除</div>
+  <div class="keys">點擊狀態圖示</div><div>切換狀態 📄 🎯 🟩 ✅</div>
+  <div class="keys">按住 + 拖曳</div><div>滑動觸發指令（大螢幕）</div>
+  <div class="keys">點擊格子</div><div>開啟環形選單（小螢幕）</div>
+</div>
+
+<h3>側面板</h3>
+<div class="grid">
+  <div class="keys">Save / Load</div><div>匯出或匯入資料為文字檔</div>
+  <div class="keys">Goal / Task / Tpl</div><div>載入範例資料或空白模板</div>
+  <div class="keys">QWE / DVK</div><div>切換鍵盤佈局（QWERTY / Dvorak）</div>
+</div>
+
+<div class="desktop">
 <h3>編輯</h3>
-<table>
-  <tr><td><kbd>u</kbd></td><td>新增紀錄 / 新增子項</td></tr>
-  <tr><td><kbd>i</kbd></td><td>行內編輯標題</td></tr>
-  <tr><td><kbd>o</kbd> / <kbd>Enter</kbd></td><td>詳細編輯（彈窗）</td></tr>
-  <tr><td><kbd>Del</kbd></td><td>刪除紀錄</td></tr>
-  <tr><td><kbd>y</kbd></td><td>切換狀態</td></tr>
-</table>
+<div class="grid">
+  <div class="keys"><kbd>u</kbd></div><div>新增紀錄 / 新增子項</div>
+  <div class="keys"><kbd>i</kbd></div><div>行內編輯標題</div>
+  <div class="keys"><kbd>o</kbd> <kbd>Enter</kbd></div><div>詳細編輯（彈窗）</div>
+  <div class="keys"><kbd>Del</kbd></div><div>刪除紀錄</div>
+  <div class="keys"><kbd>y</kbd></div><div>切換狀態</div>
+</div>
 
 <h3>格子移動</h3>
-<table>
-  <tr><td><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd> / 方向鍵</td><td>移動 1 格</td></tr>
-  <tr><td><kbd>H</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></td><td>移動 3 格</td></tr>
-</table>
+<div class="grid">
+  <div class="keys"><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd></div><div>移動 1 格</div>
+  <div class="keys"><kbd>⬅</kbd><kbd>⬇</kbd><kbd>⬆</kbd><kbd>➡</kbd></div><div>移動 1 格</div>
+  <div class="keys"><kbd>H</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></div><div>移動 3 格</div>
+</div>
 
 <h3>區內跳轉</h3>
-<table>
-  <tr><td><kbd>w</kbd><kbd>e</kbd><kbd>r</kbd><kbd>s</kbd><kbd>d</kbd><kbd>f</kbd><kbd>x</kbd><kbd>c</kbd><kbd>v</kbd></td><td>在當前 3×3 區塊內跳轉</td></tr>
-</table>
+<div class="grid">
+  <div class="key-grid"><kbd>w</kbd><kbd>e</kbd><kbd>r</kbd><kbd>s</kbd><kbd>d</kbd><kbd>f</kbd><kbd>x</kbd><kbd>c</kbd><kbd>v</kbd></div>
+  <div>在當前 3×3 區塊內跳轉</div>
+</div>
 
 <h3>區間跳轉</h3>
-<table>
-  <tr><td><kbd>W</kbd><kbd>E</kbd><kbd>R</kbd><kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd>X</kbd><kbd>C</kbd><kbd>V</kbd></td><td>跨 3×3 區塊跳轉</td></tr>
-</table>
-
-<h3>滑鼠操作（僅限已聚焦的格子）</h3>
-<table>
-  <tr><td>點擊狀態圖示</td><td>切換狀態</td></tr>
-  <tr><td>點擊標題</td><td>行內編輯</td></tr>
-  <tr><td>單擊其他區域</td><td>開啟詳細 / 新增</td></tr>
-  <tr><td>雙擊</td><td>新增子項</td></tr>
-</table>
+<div class="grid">
+  <div class="key-grid"><kbd>W</kbd><kbd>E</kbd><kbd>R</kbd><kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd>X</kbd><kbd>C</kbd><kbd>V</kbd></div>
+  <div>跨 3×3 區塊跳轉</div>
+</div>
 
 <h3>其他</h3>
-<table>
-  <tr><td><kbd>]</kbd></td><td>切換側面板</td></tr>
-  <tr><td><kbd>?</kbd></td><td>切換此說明</td></tr>
-  <tr><td><kbd>Esc</kbd></td><td>關閉彈窗 / 取消編輯</td></tr>
-</table>
+<div class="grid">
+<div class="keys"><kbd>]</kbd></div><div>切換側面板</div>
+<div class="keys"><kbd>?</kbd></div><div>切換此說明</div>
+<div class="keys"><kbd>Esc</kbd></div><div>關閉彈窗 / 取消編輯</div>
+</div>
+</div>
     `;
   }
 }

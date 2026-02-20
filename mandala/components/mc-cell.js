@@ -47,9 +47,6 @@ export default class McCell extends HTMLElement {
 .mr-title {
   font-weight: 500;
 }
-:host(:focus) .mr-title {
-  cursor: text;
-}
 .inline-edit {
   display: block;
   width: 100%;
@@ -74,7 +71,6 @@ export default class McCell extends HTMLElement {
     this._isEditing = false;
     this._isSynced = false;
     this._wasFocused = false;
-    this._clickTimer = null;
   }
 
   connectedCallback() {
@@ -88,31 +84,10 @@ export default class McCell extends HTMLElement {
 
     this.addEventListener('click', (e) => {
       if (!this._wasFocused || this._isEditing) return;
-
       const path = e.composedPath();
       const onIcon = path.some(el => el.classList?.contains('mr-icon'));
-      const onTitle = path.some(el => el.classList?.contains('mr-title'));
-
-      if (e.detail >= 2) {
-        clearTimeout(this._clickTimer);
-        this.dispatchEvent(new CustomEvent('cell-click-create', { bubbles: true }));
-        return;
-      }
-
-      clearTimeout(this._clickTimer);
-
       if (onIcon) {
-        this._clickTimer = setTimeout(() => {
-          this.dispatchEvent(new CustomEvent('cell-click-status', { bubbles: true }));
-        }, 200);
-      } else if (onTitle) {
-        this._clickTimer = setTimeout(() => {
-          this.startInlineEdit();
-        }, 200);
-      } else {
-        this._clickTimer = setTimeout(() => {
-          this.dispatchEvent(new CustomEvent('cell-click-open', { bubbles: true }));
-        }, 200);
+        this.dispatchEvent(new CustomEvent('cell-click-status', { bubbles: true }));
       }
     });
   }

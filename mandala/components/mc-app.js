@@ -20,9 +20,7 @@ export default class McApp extends HTMLElement {
     this.innerHTML = `
 <div class="mc-layout">
   <mc-grid></mc-grid>
-  <mc-side-panel>
-    <mc-toolbar></mc-toolbar>
-  </mc-side-panel>
+  <mc-side-panel></mc-side-panel>
 </div>
 <mc-modal></mc-modal>
 <mc-help-modal></mc-help-modal>
@@ -36,8 +34,8 @@ export default class McApp extends HTMLElement {
     this._notifier = this.querySelector('mc-notifier');
     this._sidePanel = this.querySelector('mc-side-panel');
     this._ringMenu = this.querySelector('mc-ring-menu');
-    this._ringTimer = null;
-    this._ringActive = false;
+    this._ringAnchor = null;
+    this._ringCell = null;
     this._ringJustUsed = false;
 
     this._loadFromStorage();
@@ -59,17 +57,9 @@ export default class McApp extends HTMLElement {
       this._renderTree();
     });
 
-    // Click events
+    // Click events (status icon only — ring menu handles the rest)
     this._grid.addEventListener('cell-click-status', (e) => {
       this._handleCycleStatus(e.target);
-    });
-    this._grid.addEventListener('cell-click-open', (e) => {
-      const cell = e.target;
-      if (cell.record) this._handleDetailEdit(cell);
-      else this._handleCreate(cell);
-    });
-    this._grid.addEventListener('cell-click-create', (e) => {
-      this._handleCreate(e.target);
     });
 
     // Migration events
@@ -84,50 +74,96 @@ export default class McApp extends HTMLElement {
       this._keyboardLayout = e.detail.layout;
     });
 
-    // Ring menu: long-press on focused cell
-    this._grid.addEventListener('pointerdown', (e) => {
-      const cell = e.target.closest('mc-cell');
-      if (!cell || cell.isEditing) return;
-      if (document.activeElement !== cell) return;
-      clearTimeout(this._ringTimer);
-      this._ringTimer = setTimeout(() => {
-        this._ringMenu.show(e.clientX, e.clientY);
-        this._ringActive = true;
-      }, 300);
+    // Help modal toggle from side panel button
+    this.addEventListener('toggle-help', () => {
+      this._helpModal.toggle();
     });
 
+    // Screen size detection: big = grid fits, small = scrollbars needed
+    const bigScreenMq = window.matchMedia('(min-height: 920px)');
+    this._isBigScreen = bigScreenMq.matches;
+    bigScreenMq.addEventListener('change', (e) => { this._isBigScreen = e.matches; });
+
+    this._ringTwoStep = localStorage.getItem('mandala-v6-ring-twostep') === 'true';
+
+    const DRAG_THRESHOLD = 24;
+
+    const isOnStatusIcon = (e) => {
+      return e.composedPath().some(el => el.classList?.contains('mr-icon'));
+    };
+
+    // --- Big screen: hold-drag-release ---
+    this._grid.addEventListener('pointerdown', (e) => {
+      if (!this._isBigScreen) return;
+      if (this._ringMenu.mode !== 'idle') return;
+      const cell = e.target.closest('mc-cell');
+      if (!cell || cell.isEditing) return;
+      if (isOnStatusIcon(e)) return;
+      e.preventDefault(); // prevent text selection during hold-drag
+      cell.focus();
+      this._ringAnchor = { x: e.clientX, y: e.clientY };
+      this._ringCell = cell;
+      this._ringMenu.beginTracking(e.clientX, e.clientY);
+      this._ringMenu.showRing(); // show ring immediately
+    });
+
+    // --- Small screen: click-to-open ---
+    this._grid.addEventListener('click', (e) => {
+      if (this._isBigScreen) return;
+      if (this._ringJustUsed) { e.stopImmediatePropagation(); return; }
+      if (this._ringMenu.mode !== 'idle') return;
+      const cell = e.target.closest('mc-cell');
+      if (!cell || cell.isEditing) return;
+      if (isOnStatusIcon(e)) return;
+      if (this._ringTwoStep && document.activeElement !== cell) {
+        cell.focus();
+        return;
+      }
+      cell.focus();
+      this._ringCell = cell;
+      this._ringMenu.show(e.clientX, e.clientY);
+    });
+
+    // --- Shared: pointermove tracking ---
     document.addEventListener('pointermove', (e) => {
-      if (!this._ringActive) return;
+      if (this._ringMenu.mode === 'idle') return;
       this._ringMenu.track(e.clientX, e.clientY);
     });
 
+    // --- Shared: pointerup ---
     document.addEventListener('pointerup', (e) => {
-      clearTimeout(this._ringTimer);
-      if (!this._ringActive) return;
-      const cmd = this._ringMenu.selectedCommand;
-      this._ringMenu.hide();
-      this._ringActive = false;
-      if (cmd) {
-        this._ringJustUsed = true;
-        setTimeout(() => { this._ringJustUsed = false; }, 0);
-        const focused = document.activeElement;
-        if (focused && focused.tagName === 'MC-CELL') {
-          this._dispatchRingCommand(cmd, focused);
+      const mode = this._ringMenu.mode;
+      if (mode === 'idle') return;
+
+      if (mode === 'tracking') {
+        if (this._ringAnchor) {
+          const dx = e.clientX - this._ringAnchor.x;
+          const dy = e.clientY - this._ringAnchor.y;
+          if (dx * dx + dy * dy <= DRAG_THRESHOLD * DRAG_THRESHOLD) {
+            // Released under threshold → dismiss
+            this._ringMenu.hide();
+            this._ringAnchor = null;
+            return;
+          }
         }
+        this._ringMenu.track(e.clientX, e.clientY);
+        this._fireRingSelection();
+      } else if (mode === 'click') {
+        this._ringMenu.track(e.clientX, e.clientY);
+        this._fireRingSelection();
       }
     });
 
     document.addEventListener('pointercancel', () => {
-      clearTimeout(this._ringTimer);
-      if (this._ringActive) {
+      if (this._ringMenu.mode !== 'idle') {
         this._ringMenu.hide();
-        this._ringActive = false;
+        this._ringAnchor = null;
       }
     });
 
-    // Click suppression after ring menu use
+    // Click suppression after ring menu use (big screen)
     this._grid.addEventListener('click', (e) => {
-      if (this._ringJustUsed) {
+      if (this._isBigScreen && this._ringJustUsed) {
         e.stopImmediatePropagation();
       }
     }, true);
@@ -236,6 +272,17 @@ export default class McApp extends HTMLElement {
     return false; // lvl2 always false
   }
 
+  _fireRingSelection() {
+    const cmd = this._ringMenu.selectedCommand;
+    this._ringMenu.hide();
+    if (cmd && cmd !== 'cancel' && this._ringCell) {
+      this._ringJustUsed = true;
+      setTimeout(() => { this._ringJustUsed = false; }, 0);
+      this._dispatchRingCommand(cmd, this._ringCell);
+    }
+    this._ringAnchor = null;
+  }
+
   _dispatchRingCommand(cmd, cell) {
     switch (cmd) {
       case 'create': this._handleCreate(cell); break;
@@ -255,6 +302,15 @@ export default class McApp extends HTMLElement {
   }
 
   _onKeydown(e) {
+    if (this._ringMenu.mode !== 'idle') {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        this._ringMenu.hide();
+        this._ringAnchor = null;
+      }
+      return;
+    }
+
     if (this._modal.isOpen) return;
 
     const key = this._translateKey(e.key);
