@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Time Tracker</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; }
+    body { display: flex; flex-direction: column; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <tt-app></tt-app>
+  <script type="module">
+import { TtApp } from "./js/TtApp.js";
+import { TtConfig } from "./js/TtConfig.js";
+import { TtDial } from "./js/TtDial.js";
+import { TtEntry } from "./js/TtEntry.js";
+import { TtEntryEdit } from "./js/TtEntryEdit.js";
+import { TtHelp } from "./js/TtHelp.js";
+import { TtHistory } from "./js/TtHistory.js";
+import { TtModal } from "./js/TtModal.js";
+import { TtRingMenu } from "./js/TtRingMenu.js";
+import { TtToolbar } from "./js/TtToolbar.js";
+import { TtTriggerWidget } from "./js/TtTriggerWidget.js";
+
+customElements.define('tt-modal', TtModal);
+customElements.define('tt-help', TtHelp);
+customElements.define('tt-dial', TtDial);
+customElements.define('tt-entry', TtEntry);
+customElements.define('tt-entry-edit', TtEntryEdit);
+customElements.define('tt-config', TtConfig);
+customElements.define('tt-ring-menu', TtRingMenu);
+customElements.define('tt-history', TtHistory);
+customElements.define('tt-toolbar', TtToolbar);
+customElements.define('tt-trigger-widget', TtTriggerWidget);
+customElements.define('tt-app', TtApp);
+  </script>
+</body>
+</html>
