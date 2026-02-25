@@ -1,4 +1,4 @@
-import { Store, getAvailableTasks } from "./shared.js";
+import { Store } from "./shared.js";
 
 // ─── <tt-app> ───────────────────────────────────────────────────────────────
 export class TtApp extends HTMLElement {
@@ -18,6 +18,7 @@ export class TtApp extends HTMLElement {
       <tt-modal id="modal-config"><tt-config></tt-config></tt-modal>
       <tt-modal id="modal-help"><tt-help></tt-help></tt-modal>
       <tt-modal id="modal-edit"><tt-entry-edit></tt-entry-edit></tt-modal>
+      <tt-toast></tt-toast>
     `;
 
     this._toolbar = this.shadowRoot.querySelector('tt-toolbar');
@@ -29,10 +30,11 @@ export class TtApp extends HTMLElement {
     this._editModal = this.shadowRoot.getElementById('modal-edit');
     this._config = this.shadowRoot.querySelector('tt-config');
     this._entryEdit = this.shadowRoot.querySelector('tt-entry-edit');
+    this._toast = this.shadowRoot.querySelector('tt-toast');
 
     this.shadowRoot.addEventListener('ring-menu-open', () => {
       if (Store.getCurrent()) return; // block while tracking
-      const available = getAvailableTasks(Store.getTasks());
+      const available = Store.getTasks();
       this._ringMenu.show(available);
       this._trigger._ringMenu = this._ringMenu;  // allow trigger to forward pointer events
     });
@@ -55,11 +57,6 @@ export class TtApp extends HTMLElement {
     });
     this.shadowRoot.addEventListener('open-help', () => this._helpModal.open());
 
-    this.shadowRoot.addEventListener('config-saved', () => {
-      this._configModal.close();
-      this._refreshState();
-    });
-
     this.shadowRoot.addEventListener('entry-edit', e => {
       const entry = Store.getEntries().find(en => en.uuid === e.detail.uuid);
       if (entry) {
@@ -69,9 +66,21 @@ export class TtApp extends HTMLElement {
     });
 
     this.shadowRoot.addEventListener('entry-delete', e => {
-      const entries = Store.getEntries().filter(en => en.uuid !== e.detail.uuid);
+      const allEntries = Store.getEntries();
+      const deleted = allEntries.find(en => en.uuid === e.detail.uuid);
+      const entries = allEntries.filter(en => en.uuid !== e.detail.uuid);
       Store.setEntries(entries);
       this._refreshState();
+      if (deleted) {
+        this._toast.show('Entry deleted.', {
+          undo: () => {
+            const cur = Store.getEntries();
+            cur.push(deleted);
+            Store.setEntries(cur);
+            this._refreshState();
+          }
+        });
+      }
     });
 
     this.shadowRoot.addEventListener('entry-save', e => {
@@ -84,6 +93,10 @@ export class TtApp extends HTMLElement {
 
     this.shadowRoot.addEventListener('entry-edit-cancel', () => {
       this._editModal.close();
+    });
+
+    this.shadowRoot.addEventListener('show-toast', e => {
+      this._toast.show(e.detail.message, { undo: e.detail.undo });
     });
 
     Store.subscribe(() => this._refreshState());
@@ -136,7 +149,7 @@ export class TtApp extends HTMLElement {
     const current = Store.getCurrent();
     if (!current) return;
     const entries = Store.getEntries();
-    entries.push({ uuid: crypto.randomUUID(), taskName: current.taskName, startTime: current.startTime, endTime: Date.now() });
+    entries.push({ uuid: crypto.randomUUID(), taskName: current.taskName, startTime: current.startTime, endTime: Date.now(), description: '' });
     Store.setEntries(entries);
     Store.setCurrent(null);
     // Keep selected task loaded (don't clear this._selectedTask)

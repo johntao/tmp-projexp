@@ -3,13 +3,37 @@
 export const Store = {
   _listeners: [],
 
-  getTasks() {
-    try { return JSON.parse(localStorage.getItem('tt-tasks')) || []; }
+  getTasksets() {
+    try { return JSON.parse(localStorage.getItem('tt-tasksets')) || []; }
     catch { return []; }
   },
-  setTasks(tasks) {
-    localStorage.setItem('tt-tasks', JSON.stringify(tasks));
+  setTasksets(tasksets) {
+    localStorage.setItem('tt-tasksets', JSON.stringify(tasksets));
     this._notify();
+  },
+
+  getActiveTab() {
+    try { return JSON.parse(localStorage.getItem('tt-active-tab')) || 0; }
+    catch { return 0; }
+  },
+  setActiveTab(idx) {
+    localStorage.setItem('tt-active-tab', JSON.stringify(idx));
+    this._notify();
+  },
+
+  // Convenience: get tasks from active taskset
+  getTasks() {
+    const sets = this.getTasksets();
+    const idx = this.getActiveTab();
+    return (sets[idx] && sets[idx].tasks) || [];
+  },
+  setTasks(tasks) {
+    const sets = this.getTasksets();
+    const idx = this.getActiveTab();
+    if (sets[idx]) {
+      sets[idx].tasks = tasks;
+      this.setTasksets(sets);
+    }
   },
 
   getEntries() {
@@ -34,23 +58,8 @@ export const Store = {
   _notify() { this._listeners.forEach(fn => fn()); }
 };
 
-export const TIME_SEGMENTS = [
-  { id: 'seg0', label: 'night',     ranges: [[0, 6], [22, 24]] },
-  { id: 'seg1', label: 'morning',   ranges: [[6, 10]] },
-  { id: 'seg2', label: 'midday',    ranges: [[10, 14]] },
-  { id: 'seg3', label: 'afternoon', ranges: [[14, 18]] },
-  { id: 'seg4', label: 'evening',   ranges: [[18, 22]] },
-];
-
-function getCurrentSegment() {
-  const hour = new Date().getHours();
-  return TIME_SEGMENTS.find(seg => seg.ranges.some(([s, e]) => hour >= s && hour < e));
-}
-
 export function getAvailableTasks(tasks) {
-  const seg = getCurrentSegment();
-  if (!seg) return tasks;
-  return tasks.filter(t => !t.timesegs || t.timesegs.length === 0 || t.timesegs.includes(seg.id));
+  return tasks;
 }
 
 export function formatDuration(ms) {

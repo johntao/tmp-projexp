@@ -1,68 +1,76 @@
-// ─── <tt-toolbar> (floating ⋮ menu, top-right) ─────────────────────────────
+import { Store } from "./shared.js";
+
+// ─── <tt-toolbar> (fixed top bar) ───────────────────────────────────────────
 export class TtToolbar extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-    this._open = false;
 
     this.shadowRoot.innerHTML = `
       <style>
-        :host { position: fixed; top: 12px; right: 12px; z-index: 500; user-select: none; }
-        .kebab {
-          width: 36px; height: 36px; border-radius: 50%; background: #fff; border: 1px solid #ddd;
-          display: flex; align-items: center; justify-content: center; cursor: pointer;
-          font-size: 20px; color: #555; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-          transition: background 0.15s;
-        }
-        .kebab:hover { background: #f0f0f0; }
-        .menu {
-          display: none; flex-direction: column; gap: 6px; margin-top: 8px;
-        }
-        .menu.open { display: flex; }
-        .menu button {
-          width: 36px; height: 36px; border-radius: 50%; background: #fff; border: 1px solid #ddd;
-          display: flex; align-items: center; justify-content: center; cursor: pointer;
-          font-size: 16px; color: #555; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-          transition: background 0.15s;
-        }
-        .menu button:hover { background: #f0f0f0; }
+:host {
+  user-select: none; background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.bar {
+  display: flex; align-items: center; padding: 6px 12px; gap: 6px;
+}
+.tabs { display: flex; gap: 4px; flex: 1; }
+.tabs button {
+  width: 32px; height: 32px; border-radius: 6px; background: #f5f5f5;
+  border: 1px solid #ddd; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 13px; font-weight: 600; color: #555;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.tabs button:hover { background: #eef2ff; }
+.tabs button.active { background: #d63851; color: #fff; border-color: #d63851; }
+.actions { display: flex; gap: 4px; }
+.actions button {
+  width: 32px; height: 32px; border-radius: 6px; background: #f5f5f5;
+  border: 1px solid #ddd; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 15px; color: #555;
+  transition: background 0.15s;
+}
+.actions button:hover { background: #eef2ff; }
       </style>
-      <div class="kebab" id="kebab">⋮</div>
-      <div class="menu" id="menu">
-        <button id="btn-config" title="Config">🔧</button>
-        <button id="btn-help" title="Help">?</button>
+      <div class="bar">
+        <div class="tabs" id="tabs"></div>
+        <div class="actions">
+          <button id="btn-config" title="Config">🔧</button>
+          <button id="btn-help" title="Help">?</button>
+        </div>
       </div>
     `;
 
-    this.shadowRoot.getElementById('kebab').addEventListener('click', (e) => {
-      e.stopPropagation();
-      this._toggle();
-    });
     this.shadowRoot.getElementById('btn-config').addEventListener('click', () => {
-      this._close();
       this.dispatchEvent(new CustomEvent('open-config', { bubbles: true, composed: true }));
     });
     this.shadowRoot.getElementById('btn-help').addEventListener('click', () => {
-      this._close();
       this.dispatchEvent(new CustomEvent('open-help', { bubbles: true, composed: true }));
     });
 
-    // Close on outside click
-    this._outsideClick = () => this._close();
-    document.addEventListener('click', this._outsideClick);
+    Store.subscribe(() => this._renderTabs());
   }
 
-  _toggle() {
-    this._open = !this._open;
-    this.shadowRoot.getElementById('menu').classList.toggle('open', this._open);
+  connectedCallback() {
+    this._renderTabs();
   }
 
-  _close() {
-    this._open = false;
-    this.shadowRoot.getElementById('menu').classList.remove('open');
-  }
-
-  disconnectedCallback() {
-    document.removeEventListener('click', this._outsideClick);
+  _renderTabs() {
+    const tabsEl = this.shadowRoot.getElementById('tabs');
+    const tasksets = Store.getTasksets();
+    const activeTab = Store.getActiveTab();
+    tabsEl.innerHTML = '';
+    tasksets.forEach((_, i) => {
+      const btn = document.createElement('button');
+      btn.textContent = i + 1;
+      if (i === activeTab) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        Store.setActiveTab(i);
+        this._renderTabs();
+      });
+      tabsEl.appendChild(btn);
+    });
   }
 }

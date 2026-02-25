@@ -27,6 +27,11 @@ export class TtModal extends HTMLElement {
     `;
     this.shadowRoot.querySelector('.backdrop').addEventListener('click', () => this.close());
     this.shadowRoot.querySelector('.close-btn').addEventListener('click', () => this.close());
+
+    this._onKeyDown = e => {
+      if (e.key === 'Escape' && this.isOpen) this.close();
+    };
+    document.addEventListener('keydown', this._onKeyDown);
   }
 
   open() { this.setAttribute('open', ''); }
@@ -36,4 +41,8 @@ export class TtModal extends HTMLElement {
   }
 
   get isOpen() { return this.hasAttribute('open'); }
+
+  disconnectedCallback() {
+    document.removeEventListener('keydown', this._onKeyDown);
+  }
 }

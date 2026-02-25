@@ -24,8 +24,10 @@ import { TtModal } from "./js/TtModal.js";
 import { TtRingMenu } from "./js/TtRingMenu.js";
 import { TtToolbar } from "./js/TtToolbar.js";
 import { TtTimespan } from "./js/TtTimespan.js";
+import { TtToast } from "./js/TtToast.js";
 import { TtTriggerWidget } from "./js/TtTriggerWidget.js";
 
+customElements.define('tt-toast', TtToast);
 customElements.define('tt-modal', TtModal);
 customElements.define('tt-help', TtHelp);
 customElements.define('tt-dial', TtDial);

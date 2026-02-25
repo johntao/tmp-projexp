@@ -42,11 +42,11 @@ export class TtHelp extends HTMLElement {
         <li>Drag to <strong>center</strong> to cancel.</li>
       </ul>
 
-      <h3>Time Segments</h3>
-      <p>Tasks can be limited to specific time segments (night, morning, midday, afternoon, evening). Only tasks matching the current segment appear in the ring menu.</p>
+      <h3>Task Sets</h3>
+      <p>Tasks are organized into tabs. Switch tabs to load different sets of tasks into the ring menu.</p>
 
       <h3>Configuration</h3>
-      <p>Tap <code>🔧</code> to manage predefined tasks (up to 8). Set name, time segments, and optional countdown duration.</p>
+      <p>Tap <code>🔧</code> to manage task sets and predefined tasks (up to 8 per tab). Set name and optional countdown duration.</p>
 
       <h3>Import / Export</h3>
       <p>Export entries as JSON for backup. Import merges entries by UUID (duplicates are skipped).</p>

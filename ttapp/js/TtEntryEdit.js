@@ -11,10 +11,12 @@ export class TtEntryEdit extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>
 :host { display: block; color: #444; }
-h3 { color: #d63851; margin-bottom: 14px; font-size: 16px; }
+h3 { color: #d63851; margin-block: 0 12px; font-size: 16px; }
 .field { margin-bottom: 12px; }
 label { display: block; font-size: 12px; color: #888; margin-bottom: 4px; }
 select { width: 100%; padding: 8px; background: #f5f5f5; color: #333; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+textarea { width: -moz-available; width: -webkit-fill-available; width: stretch;
+  padding: 8px; background: #f5f5f5; color: #333; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-family: inherit; resize: vertical; min-height: 48px; }
 .actions { display: flex; gap: 10px; margin-top: 14px; }
 .actions button {
   flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer;
@@ -23,12 +25,16 @@ select { width: 100%; padding: 8px; background: #f5f5f5; color: #333; border: 1p
 .btn-save:hover { background: #c02a43; }
 .btn-cancel { background: #e8e8e8; color: #666; }
 .btn-cancel:hover { background: #ddd; }
-tt-timespan { margin-block: 20px; }
+tt-timespan { margin-block: 1.5rem; }
       </style>
       <h3>Edit Entry</h3>
       <div class="field">
         <label>Task</label>
         <select class="task-select"></select>
+      </div>
+      <div class="field">
+        <label>Description</label>
+        <textarea class="desc-input" placeholder="Optional description…"></textarea>
       </div>
       <tt-timespan></tt-timespan>
       <div class="actions">
@@ -45,6 +51,11 @@ tt-timespan { margin-block: 20px; }
       this._draft.endTime = e.detail.endTime;
     });
 
+    this._descInput = this.shadowRoot.querySelector('.desc-input');
+    this._descInput.addEventListener('input', () => {
+      if (this._draft) this._draft.description = this._descInput.value;
+    });
+
     this.shadowRoot.querySelector('.btn-save').addEventListener('click', () => this._save());
     this.shadowRoot.querySelector('.btn-cancel').addEventListener('click', () => this._cancel());
   }
@@ -53,6 +64,7 @@ tt-timespan { margin-block: 20px; }
     this._entry = val;
     this._draft = { ...val };
     this._timespan.timespan = { startTime: val.startTime, endTime: val.endTime };
+    this._descInput.value = val.description || '';
     this._populateTaskSelect();
   }
 

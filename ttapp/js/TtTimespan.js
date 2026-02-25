@@ -25,7 +25,7 @@ export class TtTimespan extends HTMLElement {
 
     this.shadowRoot.innerHTML = `
       <style>
-:host { display: block; color: #444; max-width: 320px; margin-inline: auto; }
+:host { display: block; color: #444; max-width: 320px; margin-inline: auto; user-select: none; -webkit-user-select: none; touch-action: none; }
 
 /* ── Bar line ── */
 .bar-line { height: 3px; background: #d63851; border-radius: 2px; position: relative; }
@@ -64,7 +64,7 @@ export class TtTimespan extends HTMLElement {
 /* ── Shared overlay base ── */
 .overlay {
   display: none; position: fixed; inset: 0; z-index: 3000;
-  touch-action: none; user-select: none;
+  touch-action: none; user-select: none; -webkit-user-select: none;
 }
 .overlay.open { display: block; }
 .overlay-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.15); }
