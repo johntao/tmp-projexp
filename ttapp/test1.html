@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Ring Menu — Event Model Test</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; }
+    body { padding: 20px; }
+    h1 { font-size: 18px; margin-bottom: 16px; }
+    h2 { font-size: 14px; margin-bottom: 8px; color: #666; }
+    .test-section { margin-bottom: 32px; }
+    .trigger {
+      display: inline-block; padding: 12px 24px; background: #fff; border: 2px solid #d63851;
+      border-radius: 24px; color: #d63851; font-weight: 600; cursor: pointer;
+      user-select: none; -webkit-user-select: none; touch-action: none;
+    }
+    .log {
+      margin-top: 8px; padding: 8px; background: #fff; border: 1px solid #ddd;
+      border-radius: 8px; font-family: monospace; font-size: 12px; height: 80px;
+      overflow-y: auto; color: #555;
+    }
+    .overlay {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      touch-action: none; -webkit-user-select: none; user-select: none;
+    }
+    .overlay.open { display: block; }
+    .overlay .backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.18); }
+    .overlay svg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .item-arc { fill: #fff; stroke: #ddd; stroke-width: 1; }
+    .item-arc.active { fill: #d63851; }
+    .item-label { fill: #444; font-size: 12px; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+    .item-label.active { fill: #fff; font-weight: bold; }
+    .cancel-zone { fill: #f5f5f5; stroke: #ccc; stroke-width: 1; }
+    .cancel-text { fill: #999; font-size: 11px; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+  </style>
+</head>
+<body>
+
+<h1>Ring Menu — Event Model Test (iPhone debugging)</h1>
+<p style="margin-bottom:20px;color:#888;font-size:13px">Hold a trigger, drag to an item, release. Check which event model works on your device.</p>
+
+<!-- ═══ Test 1: PointerEvent ═══ -->
+<div class="test-section">
+  <h2>1. PointerEvent</h2>
+  <div class="trigger" id="trigger-pointer">Hold: PointerEvent</div>
+  <div class="log" id="log-pointer"></div>
+  <div class="overlay" id="overlay-pointer">
+    <div class="backdrop"></div>
+    <svg viewBox="-160 -160 320 320" width="320" height="320" id="svg-pointer"></svg>
+  </div>
+</div>
+
+<!-- ═══ Test 2: MouseEvent ═══ -->
+<div class="test-section">
+  <h2>2. MouseEvent</h2>
+  <div class="trigger" id="trigger-mouse">Hold: MouseEvent</div>
+  <div class="log" id="log-mouse"></div>
+  <div class="overlay" id="overlay-mouse">
+    <div class="backdrop"></div>
+    <svg viewBox="-160 -160 320 320" width="320" height="320" id="svg-mouse"></svg>
+  </div>
+</div>
+
+<!-- ═══ Test 3: TouchEvent ═══ -->
+<div class="test-section">
+  <h2>3. TouchEvent</h2>
+  <div class="trigger" id="trigger-touch">Hold: TouchEvent</div>
+  <div class="log" id="log-touch"></div>
+  <div class="overlay" id="overlay-touch">
+    <div class="backdrop"></div>
+    <svg viewBox="-160 -160 320 320" width="320" height="320" id="svg-touch"></svg>
+  </div>
+</div>
+
+<script>
+// ─── Shared rendering & hit-test ────────────────────────────────────────────
+
+const ITEMS = ['Work', 'Break', 'Meeting', 'Email', 'Exercise', 'Reading'];
+const innerR = 45, outerR = 130, labelR = 88;
+
+function renderRing(svg, activeIndex) {
+  const n = ITEMS.length;
+  const sliceAngle = 360 / n;
+  let html = `<circle class="cancel-zone" cx="0" cy="0" r="35" />`;
+  html += `<text class="cancel-text" x="0" y="0">Cancel</text>`;
+  for (let i = 0; i < n; i++) {
+    const sa = (i * sliceAngle - 90) * Math.PI / 180;
+    const ea = ((i + 1) * sliceAngle - 90) * Math.PI / 180;
+    const x1i = innerR * Math.cos(sa), y1i = innerR * Math.sin(sa);
+    const x2i = innerR * Math.cos(ea), y2i = innerR * Math.sin(ea);
+    const x1o = outerR * Math.cos(sa), y1o = outerR * Math.sin(sa);
+    const x2o = outerR * Math.cos(ea), y2o = outerR * Math.sin(ea);
+    const la = sliceAngle > 180 ? 1 : 0;
+    const active = i === activeIndex;
+    html += `<path class="item-arc${active ? ' active' : ''}" d="M ${x1i} ${y1i} L ${x1o} ${y1o} A ${outerR} ${outerR} 0 ${la} 1 ${x2o} ${y2o} L ${x2i} ${y2i} A ${innerR} ${innerR} 0 ${la} 0 ${x1i} ${y1i} Z" />`;
+    const ma = ((i + 0.5) * sliceAngle - 90) * Math.PI / 180;
+    html += `<text class="item-label${active ? ' active' : ''}" x="${labelR * Math.cos(ma)}" y="${labelR * Math.sin(ma)}">${ITEMS[i]}</text>`;
+  }
+  svg.innerHTML = html;
+}
+
+function hitTest(svg, clientX, clientY) {
+  const rect = svg.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const dx = clientX - cx, dy = clientY - cy;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  if (dist < 35) return -1;
+  let angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+  if (angle < 0) angle += 360;
+  return Math.floor(angle / (360 / ITEMS.length)) % ITEMS.length;
+}
+
+function log(id, msg) {
+  const el = document.getElementById(id);
+  const line = document.createElement('div');
+  line.textContent = `${new Date().toLocaleTimeString()} ${msg}`;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Test 1: PointerEvent
+// Key iOS fix: preventDefault on pointerdown + setPointerCapture on the trigger,
+// then listen for pointermove/pointerup on the trigger (capture keeps events flowing).
+// ═══════════════════════════════════════════════════════════════════════════════
+{
+  const trigger = document.getElementById('trigger-pointer');
+  const overlay = document.getElementById('overlay-pointer');
+  const svg     = document.getElementById('svg-pointer');
+  let isOpen = false, activeIdx = -1;
+
+  trigger.addEventListener('pointerdown', e => {
+    e.preventDefault();  // suppress iOS text selection + scroll
+    trigger.setPointerCapture(e.pointerId);  // keep events on trigger even after overlay opens
+    isOpen = true;
+    activeIdx = -1;
+    overlay.classList.add('open');
+    renderRing(svg, -1);
+    log('log-pointer', `pointerdown (id=${e.pointerId})`);
+  });
+
+  // Because pointer is captured to trigger, move/up fire on trigger, not overlay
+  trigger.addEventListener('pointermove', e => {
+    if (!isOpen) return;
+    activeIdx = hitTest(svg, e.clientX, e.clientY);
+    renderRing(svg, activeIdx);
+    log('log-pointer', `pointermove → idx=${activeIdx}`);
+  });
+
+  trigger.addEventListener('pointerup', e => {
+    if (!isOpen) return;
+    trigger.releasePointerCapture(e.pointerId);
+    isOpen = false;
+    overlay.classList.remove('open');
+    const idx = hitTest(svg, e.clientX, e.clientY);
+    const result = idx >= 0 ? ITEMS[idx] : '(cancelled)';
+    log('log-pointer', `pointerup → SELECTED: ${result}`);
+  });
+
+  trigger.addEventListener('pointercancel', e => {
+    if (!isOpen) return;
+    isOpen = false;
+    overlay.classList.remove('open');
+    log('log-pointer', `pointercancel → (cancelled)`);
+  });
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Test 2: MouseEvent
+// mousedown/mousemove/mouseup — typically NOT fired during touch on iOS.
+// Included to confirm this doesn't work on touch devices.
+// ═══════════════════════════════════════════════════════════════════════════════
+{
+  const trigger = document.getElementById('trigger-mouse');
+  const overlay = document.getElementById('overlay-mouse');
+  const svg     = document.getElementById('svg-mouse');
+  let isOpen = false, activeIdx = -1;
+
+  trigger.addEventListener('mousedown', e => {
+    e.preventDefault();
+    isOpen = true;
+    activeIdx = -1;
+    overlay.classList.add('open');
+    renderRing(svg, -1);
+    log('log-mouse', `mousedown`);
+  });
+
+  // Listen on document since there's no capture equivalent for mouse
+  document.addEventListener('mousemove', e => {
+    if (!isOpen) return;
+    activeIdx = hitTest(svg, e.clientX, e.clientY);
+    renderRing(svg, activeIdx);
+    log('log-mouse', `mousemove → idx=${activeIdx}`);
+  });
+
+  document.addEventListener('mouseup', e => {
+    if (!isOpen) return;
+    isOpen = false;
+    overlay.classList.remove('open');
+    const idx = hitTest(svg, e.clientX, e.clientY);
+    const result = idx >= 0 ? ITEMS[idx] : '(cancelled)';
+    log('log-mouse', `mouseup → SELECTED: ${result}`);
+  });
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Test 3: TouchEvent
+// touchstart/touchmove/touchend — native touch API, best iOS support.
+// e.preventDefault() on touchstart is critical to suppress scrolling & text selection.
+// Touch events keep firing on the originating element regardless of finger position.
+// ═══════════════════════════════════════════════════════════════════════════════
+{
+  const trigger = document.getElementById('trigger-touch');
+  const overlay = document.getElementById('overlay-touch');
+  const svg     = document.getElementById('svg-touch');
+  let isOpen = false, activeIdx = -1;
+
+  trigger.addEventListener('touchstart', e => {
+    e.preventDefault();  // suppress scroll, text selection, and delayed click
+    isOpen = true;
+    activeIdx = -1;
+    overlay.classList.add('open');
+    renderRing(svg, -1);
+    const t = e.touches[0];
+    log('log-touch', `touchstart (${Math.round(t.clientX)},${Math.round(t.clientY)})`);
+  }, { passive: false });
+
+  trigger.addEventListener('touchmove', e => {
+    if (!isOpen) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    activeIdx = hitTest(svg, t.clientX, t.clientY);
+    renderRing(svg, activeIdx);
+    log('log-touch', `touchmove → idx=${activeIdx}`);
+  }, { passive: false });
+
+  trigger.addEventListener('touchend', e => {
+    if (!isOpen) return;
+    e.preventDefault();
+    isOpen = false;
+    overlay.classList.remove('open');
+    // touchend has no touches[], use changedTouches
+    const t = e.changedTouches[0];
+    const idx = hitTest(svg, t.clientX, t.clientY);
+    const result = idx >= 0 ? ITEMS[idx] : '(cancelled)';
+    log('log-touch', `touchend → SELECTED: ${result}`);
+  }, { passive: false });
+
+  trigger.addEventListener('touchcancel', e => {
+    if (!isOpen) return;
+    isOpen = false;
+    overlay.classList.remove('open');
+    log('log-touch', `touchcancel → (cancelled)`);
+  });
+}
+</script>
+</body>
+</html>
