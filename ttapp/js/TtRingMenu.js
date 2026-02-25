@@ -28,10 +28,13 @@ export class TtRingMenu extends HTMLElement {
     `;
 
     this._svg = this.shadowRoot.querySelector('svg');
-    this.addEventListener('pointermove', e => this._onMove(e));
-    this.addEventListener('pointerup', e => this._onUp(e));
-    this.addEventListener('pointercancel', e => this._onUp(e));
   }
+
+  /** Forward a pointermove from an external capture source. */
+  trackMove(e) { this._onMove(e); }
+
+  /** Forward a pointerup from an external capture source. */
+  trackUp(e) { this._onUp(e); }
 
   show(items) {
     this._items = items;

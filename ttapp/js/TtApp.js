@@ -34,6 +34,7 @@ export class TtApp extends HTMLElement {
       if (Store.getCurrent()) return; // block while tracking
       const available = getAvailableTasks(Store.getTasks());
       this._ringMenu.show(available);
+      this._trigger._ringMenu = this._ringMenu;  // allow trigger to forward pointer events
     });
 
     this.shadowRoot.addEventListener('task-selected', e => {

@@ -7,6 +7,7 @@ export class TtTriggerWidget extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this._selectedTask = null;
     this._tracking = false;
+    this._ringMenu = null;  // set by TtApp when ring menu opens
     this._timerInterval = null;
     this._currentEntry = null;
     this._notified = false;
@@ -53,10 +54,27 @@ export class TtTriggerWidget extends HTMLElement {
       </div>
     `;
 
-    this.shadowRoot.getElementById('trigger').addEventListener('pointerdown', e => {
+    const trigger = this.shadowRoot.getElementById('trigger');
+    trigger.addEventListener('pointerdown', e => {
       if (this._tracking) return; // disable when tracking
       e.preventDefault();
+      trigger.setPointerCapture(e.pointerId);
       this.dispatchEvent(new CustomEvent('ring-menu-open', { bubbles: true, composed: true }));
+    });
+    trigger.addEventListener('pointermove', e => {
+      if (!this._ringMenu) return;
+      this._ringMenu.trackMove(e);
+    });
+    trigger.addEventListener('pointerup', e => {
+      if (!this._ringMenu) return;
+      trigger.releasePointerCapture(e.pointerId);
+      this._ringMenu.trackUp(e);
+      this._ringMenu = null;
+    });
+    trigger.addEventListener('pointercancel', e => {
+      if (!this._ringMenu) return;
+      this._ringMenu.trackUp(e);
+      this._ringMenu = null;
     });
     this.shadowRoot.getElementById('btn-toggle').addEventListener('click', () => {
       if (this._tracking) {
