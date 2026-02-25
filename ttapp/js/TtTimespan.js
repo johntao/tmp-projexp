@@ -339,6 +339,7 @@ export class TtTimespan extends HTMLElement {
     btn.addEventListener('pointerup', e => {
       if (!this._addBarActive) return;
       btn.releasePointerCapture(e.pointerId);
+      this._onBarRelease(e);
     });
     btn.addEventListener('pointercancel', e => {
       if (!this._addBarActive) return;
