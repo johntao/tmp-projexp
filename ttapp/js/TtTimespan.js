@@ -253,13 +253,24 @@ export class TtTimespan extends HTMLElement {
     });
   }
 
+  _isSmallScreen() {
+    return window.innerWidth < 600 || window.innerHeight < 600;
+  }
+
+  _getCenteredPos(x, y) {
+    if (this._isSmallScreen()) {
+      return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    }
+    return { x, y };
+  }
+
   _openDialAt(field, x, y) {
     this._dialTarget = field;
     this._configureDial(field);
     this._dialActive = true;
-    // Position dial centered on pointer
-    this._dialPanel.style.left = `${x}px`;
-    this._dialPanel.style.top = `${y}px`;
+    const pos = this._getCenteredPos(x, y);
+    this._dialPanel.style.left = `${pos.x}px`;
+    this._dialPanel.style.top = `${pos.y}px`;
     this._dialOverlay.classList.add('open');
     this._dial.beginDrag();
   }
@@ -343,9 +354,9 @@ export class TtTimespan extends HTMLElement {
     this._sbLabel.textContent = sign > 0 ? '+' : '−';
     this._sbValue.textContent = '0:00';
     this._stepEls.forEach(el => el.classList.remove('active', 'in-range'));
-    // Position step bar: top-center at pointer
-    this._stepBar.style.left = `${x}px`;
-    this._stepBar.style.top = `${y}px`;
+    const pos = this._getCenteredPos(x, y);
+    this._stepBar.style.left = `${pos.x}px`;
+    this._stepBar.style.top = `${pos.y}px`;
     this._stepBarOverlay.classList.add('open');
   }
 
