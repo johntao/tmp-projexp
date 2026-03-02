@@ -42,3 +42,9 @@ LangChain 教學	既有專案	colab	edu	lecture	0	3	2	["Python","Colab","LangCha
 銷售流程設計	新專案	heptabase	sales	Service-flow	0	3	1	[]	設計並文件化銷售工作流程	
 Odoo工作坊流程設計與實作	新專案	heptabase	sales	Service-flow	0	3	1	["CloudPepper","AWS"]	在 AWS 上建置 20 個 Odoo ERP 實例	
 `;
+const ERAs = [
+  {"name": "崇越科技", "period": "2016 - 2020" },
+  {"name": "瑞嘉軟體", "period": "2020 - 2022" },
+  {"name": "羅奇科技", "period": "2022 - 2024" },
+  {"name": "芸机工作室", "period": "2025 - 2026" }
+];

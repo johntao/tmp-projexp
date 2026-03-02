@@ -42,3 +42,9 @@ ECPay Module Upgrade	Existing Project	odoo	webapi	E-commerce	0	3	1	["Python"]	Up
 Sales Workflow Design	New Project	heptabase	sales	Service-flow	0	3	1	[]	Designed and documented sales workflow
 Odoo Workshop Design & Implementation	New Project	heptabase	sales	Service-flow	0	3	1	["CloudPepper","AWS"]	Built 20 Odoo ERP instances on AWS
 `;
+const ERAs = [
+  {"name": "TSC Topco", "period": "2016 - 2020" },
+  {"name": "ONElab", "period": "2020 - 2022" },
+  {"name": "LogiKCo", "period": "2022 - 2024" },
+  {"name": "YunJi Studio", "period": "2025 - 2026" }
+];
