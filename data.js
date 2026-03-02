@@ -1,4 +1,4 @@
-title	badge1	badge2	cat1	cat2	own	era	rank	tags	desc	url
+const DATA_TSV = `title	badge1	badge2	cat1	cat2	own	era	rank	tags	desc	url
 跨平台資料轉移（部落格文章）	新專案	cli	rpa	Data-migration	0	0	3	["AutoIt","C# Lib","Google Photos","Google API"]	自動化搬遷 500 篇部落格文章，整合 Google Photos API 處理圖片託管	
 跨平台資料轉移（悠遊卡）	新專案	cli	rpa	Data-migration	0	0	3	["AutoIt","C# Lib","CAPTCHA 破解","bitcoin"]	從悠遊卡後台系統批次匯出資料，包含驗證碼自動識別機制	
 養豬場電子表單	既有專案	web	web	E-form	0	0	3	["Vue.js","CLI","字串處理"]	運用元程式設計動態產生表單欄位，第一個接案經驗	
@@ -41,3 +41,4 @@ LangChain 教學	既有專案	colab	edu	lecture	0	3	2	["Python","Colab","LangCha
 綠界金流模組升級	既有專案	odoo	webapi	E-commerce	0	3	1	["Python"]	升級綠界金流模組，首次使用 Python 開發	
 銷售流程設計	新專案	heptabase	sales	Service-flow	0	3	1	[]	設計並文件化銷售工作流程	
 Odoo工作坊流程設計與實作	新專案	heptabase	sales	Service-flow	0	3	1	["CloudPepper","AWS"]	在 AWS 上建置 20 個 Odoo ERP 實例	
+`;

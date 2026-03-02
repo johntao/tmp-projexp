@@ -129,7 +129,11 @@
       display: none;
     }
 
-    .project-header {
+    .project.not-owned {
+      font-style: italic;
+    }
+
+    .pj-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -137,21 +141,27 @@
       margin-bottom: 0.5rem;
     }
 
-    .project-title {
+    .pj-title {
       font-weight: 600;
       font-size: 0.95rem;
       flex: 1;
     }
 
-    .project-title a {
-      color: inherit;
+    .pj-title a {
+      color: #3498db;
       text-decoration: none;
-      border-bottom: 1px dashed #999;
+      font-weight: 600;
     }
 
-    .project-title a:hover {
-      color: #3498db;
-      border-bottom-color: #3498db;
+    .pj-title a:hover {
+      color: #2980b9;
+      text-decoration: underline;
+    }
+
+    .badges {
+      display: flex;
+      gap: 0.25rem;
+      flex-shrink: 0;
     }
 
     .badge {
@@ -182,19 +192,24 @@
       color: #721c24;
     }
 
-    .project-category {
+    .badge-secondary {
+      background: #e2e3e5;
+      color: #383d41;
+    }
+
+    .pj-category {
       font-size: 0.8rem;
       color: #666;
       margin-bottom: 0.25rem;
     }
 
-    .project-desc {
+    .pj-desc {
       font-size: 0.85rem;
       color: #555;
       margin-bottom: 0.5rem;
     }
 
-    .project-tech {
+    .pj-tech {
       display: flex;
       flex-wrap: wrap;
       gap: 0.25rem;
@@ -206,13 +221,6 @@
       color: #555;
       padding: 0.15rem 0.4rem;
       border-radius: 3px;
-    }
-
-    .significance {
-      font-size: 0.7rem;
-      color: #888;
-      margin-top: 0.5rem;
-      text-align: right;
     }
 
     .significance-3 {
@@ -255,597 +263,113 @@
     </div>
   </header>
 
-  <div class="timeline-container">
-    <!-- Era 1: TSC Topco (2016-2020) -->
-    <div class="era">
-      <div class="era-header">
-        <h2>TSC Topco</h2>
-        <div class="era-period">2016 - 2020</div>
-      </div>
-      <div class="era-projects">
-        <!-- r=3 projects -->
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">Cross Platform Data Transfer (Blog Posts)</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">RPA</div>
-          <div class="project-desc">Automated migration of 500 blog posts, integrated Google Photos API for image hosting</div>
-          <div class="project-tech">
-            <span class="tech-tag">AutoIt</span>
-            <span class="tech-tag">C# Lib</span>
-            <span class="tech-tag">Google Photos</span>
-            <span class="tech-tag">Google API</span>
-          </div>
-        </div>
+  <div class="timeline-container" id="timeline"></div>
 
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">Cross Platform Data Transfer (EasyCard)</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">RPA</div>
-          <div class="project-desc">Batch data export from EasyCard admin panel, including automated CAPTCHA recognition</div>
-          <div class="project-tech">
-            <span class="tech-tag">AutoIt</span>
-            <span class="tech-tag">C# Lib</span>
-            <span class="tech-tag">CAPTCHA Hack</span>
-            <span class="tech-tag">bitcoin</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">Infinitode Parser</span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category">RPA / data</div>
-          <div class="project-desc">Extracted game screenshot data via OCR, automatically organized into spreadsheets for analysis</div>
-          <div class="project-tech">
-            <span class="tech-tag">GCP OCR</span>
-            <span class="tech-tag">Google Spreadsheet</span>
-            <span class="tech-tag">Google Photos</span>
-          </div>
-        </div>
-
-        <!-- r=2 projects -->
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">TSC Fit Admin Tool</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">CLI / internal</div>
-          <div class="project-desc">Developed CLI task scheduler tool, integrated 3rd party API for automated routine tasks</div>
-          <div class="project-tech">
-            <span class="tech-tag">EF</span>
-            <span class="tech-tag">CLI</span>
-            <span class="tech-tag">LINQ</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">EIP 4.0</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">web / internal</div>
-          <div class="project-desc">Redesigned enterprise portal with responsive interface and custom dashboard</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET WebForm</span>
-            <span class="tech-tag">jQuery</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">CMS 2.0</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">web / cms</div>
-          <div class="project-desc">Developed new CMS system with responsive design and custom layout configuration</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET MVC</span>
-            <span class="tech-tag">ADO.NET</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">TSC Fit</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">web / internal</div>
-          <div class="project-desc">Built fitness data dashboard with database and frontend performance optimization</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET WebForm</span>
-            <span class="tech-tag">jQuery</span>
-            <span class="tech-tag">EF</span>
-          </div>
-        </div>
-
-        <!-- r=1 projects -->
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">VBA Refactor</span>
-            <span class="badge badge-brown">Existing Project</span>
-          </div>
-          <div class="project-category">vba / internal</div>
-          <div class="project-desc">Refactored legacy VBA code, clarified and documented business requirements</div>
-          <div class="project-tech">
-            <span class="tech-tag">VBA</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">E-Form System</span>
-            <span class="badge badge-brown">Existing Project</span>
-          </div>
-          <div class="project-category">web / internal</div>
-          <div class="project-desc">Maintained e-form system, integrated ERP and 3rd party libraries</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET WebForm</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">MyReport</span>
-            <span class="badge badge-brown">Existing Project</span>
-          </div>
-          <div class="project-category">web / internal</div>
-          <div class="project-desc">Developed daily/weekly report system, integrated CKEditor rich text editing</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET WebForm</span>
-            <span class="tech-tag">MVC</span>
-            <span class="tech-tag">CKEditor</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">VBA Gantt Chart</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">pm / internal</div>
-          <div class="project-desc">Developed Gantt chart generator using VBA drawing features</div>
-          <div class="project-tech">
-            <span class="tech-tag">VBA Drawing</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">SSO AD Account Sync</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">RPA / data</div>
-          <div class="project-desc">Troubleshot SSO and Active Directory account sync issues, defined standard workflow</div>
-          <div class="project-tech">
-            <span class="tech-tag">AD</span>
-            <span class="tech-tag">ASP.NET</span>
-            <span class="tech-tag">TAM</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">E-Learning Auto-Click Tool</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">RPA</div>
-          <div class="project-desc">Automated course progress clicking on e-learning platform</div>
-          <div class="project-tech">
-            <span class="tech-tag">AutoIt</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">104 Job Bank Parser</span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category">web / parser</div>
-          <div class="project-desc">First web scraping project, parsed job listings from 104 Job Bank</div>
-          <div class="project-tech">
-            <span class="tech-tag">CLI</span>
-            <span class="tech-tag">HttpAgilityPack</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">RTF Transformer</span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category">CLI / data</div>
-          <div class="project-desc">Parsed RTF format documents and converted to plain text</div>
-          <div class="project-tech">
-            <span class="tech-tag">CLI</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Era 2: ONElab (2020-2022) -->
-    <div class="era">
-      <div class="era-header">
-        <h2>ONElab</h2>
-        <div class="era-period">2020 - 2022</div>
-      </div>
-      <div class="era-projects">
-        <!-- r=3 projects -->
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">ELK Logging System</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">oss</div>
-          <div class="project-desc">Built ELK Stack centralized logging platform, supporting multi-service real-time monitoring and Kibana queries</div>
-          <div class="project-tech">
-            <span class="tech-tag">Linux</span>
-            <span class="tech-tag">Docker Swarm</span>
-            <span class="tech-tag">Docker-Compose</span>
-            <span class="tech-tag">ELK</span>
-            <span class="tech-tag">NLog</span>
-            <span class="tech-tag">Lucene</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">Bot Capturing Report</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">data</div>
-          <div class="project-desc">Developed suspicious account detection system using bit flags to mark anomalous behavior with flag query tool</div>
-          <div class="project-tech">
-            <span class="tech-tag">T-SQL</span>
-            <span class="tech-tag">.NET</span>
-            <span class="tech-tag">dataurl</span>
-            <span class="tech-tag">bit-flags</span>
-          </div>
-        </div>
-
-        <!-- r=2 projects -->
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">API Wrapper for Native App</span>
-            <span class="badge badge-brown">Existing Project</span>
-          </div>
-          <div class="project-category">api</div>
-          <div class="project-desc">Wrapped backend logic (statement, result, and member), set up API for native mobile app consumption</div>
-          <div class="project-tech">
-            <span class="tech-tag">C# .NET</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">Punch Clock Automation</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">Script tool for automating punch clock process (experimental use only)</div>
-          <div class="project-tech">
-            <span class="tech-tag">cmd.exe</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">Site Config Query Tool</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">cli</div>
-          <div class="project-desc">Developed CLI tool for inverted search of site configuration files</div>
-          <div class="project-tech">
-            <span class="tech-tag">C# .NET CLI</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">Postman Integration Test</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">test</div>
-          <div class="project-desc">Wrote Postman scripts for API integration testing</div>
-          <div class="project-tech">
-            <span class="tech-tag">Postman</span>
-            <span class="tech-tag">JavaScript</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">VSCode Markdown Extension</span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category">ext</div>
-          <div class="project-desc">Developed VSCode extension to improve Markdown note-taking UX</div>
-          <div class="project-tech">
-            <span class="tech-tag">TypeScript</span>
-            <span class="tech-tag">Redux</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">UM Services Update Automation</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category">devops</div>
-          <div class="project-desc">Automated service update process, reduced deployment time from 50 minutes to 5 minutes</div>
-          <div class="project-tech">
-            <span class="tech-tag">PowerShell</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Era 3: LogiKCo (2022-2024) -->
-    <div class="era">
-      <div class="era-header">
-        <h2>LogiKCo</h2>
-        <div class="era-period">2022 - 2024</div>
-      </div>
-      <div class="era-projects">
-        <!-- r=3 projects -->
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">Logistic Admin Platform</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">Full-stack development of logistics dispatch system, covering order dispatch, vehicle scheduling and resource management</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET</span>
-            <span class="tech-tag">react-admin</span>
-            <span class="tech-tag">KendoUI</span>
-            <span class="tech-tag">MS-SQL</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">Cyber Security Integration</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">Integrated KnowBe4 security awareness training platform, implemented Webhook and SSO single sign-on</div>
-          <div class="project-tech">
-            <span class="tech-tag">webhook</span>
-            <span class="tech-tag">Playwright</span>
-            <span class="tech-tag">MS-SQL</span>
-            <span class="tech-tag">SSO</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title"><a href="https://personal-blog-khaki.vercel.app/" target="_blank">First Tech Blog</a></span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">Wrote web development technical articles, designed blog visual style and interactive experience from scratch</div>
-          <div class="project-tech">
-            <span class="tech-tag">JAMstack</span>
-            <span class="tech-tag">Next.js</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title"><a href="https://marketplace.visualstudio.com/items?itemName=JohnTao.markdown-outline-helper" target="_blank">VSCode Extension (TDD)</a></span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">Markdown outline helper tool developed with TDD, published on VS Marketplace</div>
-          <div class="project-tech">
-            <span class="tech-tag">TypeScript</span>
-            <span class="tech-tag">Redux</span>
-            <span class="tech-tag">TDD</span>
-          </div>
-        </div>
-
-        <!-- r=2 projects -->
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">SMART Student Subsidy System</span>
-            <span class="badge badge-brown">Existing Project</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">Maintained student subsidy application system, handled review process and reporting features</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET MVC</span>
-            <span class="tech-tag">KendoUI</span>
-            <span class="tech-tag">MS-SQL</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">Movie Parser</span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">Used Playwright to automatically scrape movie data and export to spreadsheets</div>
-          <div class="project-tech">
-            <span class="tech-tag">C#</span>
-            <span class="tech-tag">Playwright</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">591 Rental Parser</span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">Background service continuously scraping 591 rental information, stored in SQLite database</div>
-          <div class="project-tech">
-            <span class="tech-tag">C#</span>
-            <span class="tech-tag">SQLite</span>
-            <span class="tech-tag">daemon</span>
-            <span class="tech-tag">Playwright</span>
-            <span class="tech-tag">headless-mode</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Era 4: Gap Year (2025) -->
-    <div class="era">
-      <div class="era-header">
-        <h2>Gap Year</h2>
-        <div class="era-period">2025</div>
-      </div>
-      <div class="era-projects">
-        <!-- r=3 projects -->
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title"><a href="https://github.com/johntao/design-docs" target="_blank">VIM Keys Game</a></span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category">game</div>
-          <div class="project-desc">Learn VIM shortcuts through gamification, interactive web game developed with SDD and AI assistance</div>
-          <div class="project-tech">
-            <span class="tech-tag">Claude-Code</span>
-            <span class="tech-tag">plain-HTML</span>
-            <span class="tech-tag">SDD</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title"><a href="https://johntao.dev" target="_blank">Personal Blog</a></span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category">blog</div>
-          <div class="project-desc">Accumulated 30 technical articles, exploring possibilities of AI-assisted writing</div>
-          <div class="project-tech">
-            <span class="tech-tag">Claude-Code</span>
-            <span class="tech-tag">Supabase</span>
-            <span class="tech-tag">MCP</span>
-            <span class="tech-tag">Lynx-Compatible</span>
-          </div>
-        </div>
-
-        <!-- r=2 projects -->
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">One-Shot Ordering Bot</span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category">bot</div>
-          <div class="project-desc">Used Playwright to automate movie ticket ordering process</div>
-          <div class="project-tech">
-            <span class="tech-tag">Claude-Code</span>
-            <span class="tech-tag">Playwright</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">Company Website & Business Card</span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category">web</div>
-          <div class="project-desc">Used AI tools to quickly complete company website and business card visual design</div>
-          <div class="project-tech">
-            <span class="tech-tag">Azure DevOps</span>
-            <span class="tech-tag">Astro</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">RTF Parser Rework</span>
-            <span class="badge badge-sideproj">Side Project</span>
-          </div>
-          <div class="project-category">web</div>
-          <div class="project-desc">Redesigned RTF parser (2020), code reduced to one-tenth of original version</div>
-          <div class="project-tech">
-            <span class="tech-tag">.NET 10</span>
-            <span class="tech-tag">Claude-Code</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">LangChain Teaching</span>
-            <span class="badge badge-brown">Existing Project</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">First time as instructor, teaching LangChain and AI application development</div>
-          <div class="project-tech">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">Colab</span>
-            <span class="tech-tag">LangChain</span>
-          </div>
-        </div>
-
-        <!-- r=1 projects -->
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">ECPay Module Upgrade</span>
-            <span class="badge badge-brown">Existing Project</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">Upgraded ECPay payment module, first time using Python for development</div>
-          <div class="project-tech">
-            <span class="tech-tag">Python</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">Sales Workflow Design</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">Designed and documented sales workflow</div>
-          <div class="project-tech"></div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">Workflow Design & Implementation</span>
-            <span class="badge badge-green">New Project</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">Built 20 Odoo ERP instances on AWS</div>
-          <div class="project-tech">
-            <span class="tech-tag">CloudPepper</span>
-            <span class="tech-tag">AWS</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
+  <script src="data.js"></script>
   <script>
     const eras = [
-{"name": "TSC Topco", "period": "2016 - 2020" },
-{"name": "ONElab", "period": "2020 - 2022" },
-{"name": "LogiKCo", "period": "2022 - 2024" },
-{"name": "YunJi Studio", "period": "2025 - 2026" }
-];
-    const checkbox = document.getElementById('showAll');
-    const hiddenProjects = document.querySelectorAll('.project[data-r="1"], .project[data-r="2"]');
+      {"name": "TSC Topco", "period": "2016 - 2020" },
+      {"name": "ONElab", "period": "2020 - 2022" },
+      {"name": "LogiKCo", "period": "2022 - 2024" },
+      {"name": "YunJi Studio", "period": "2025 - 2026" }
+    ];
 
-    checkbox.addEventListener('change', function() {
-      hiddenProjects.forEach(project => {
-        if (this.checked) {
-          project.classList.remove('hidden');
-        } else {
-          project.classList.add('hidden');
-        }
+    const badgeClassMap = {
+      '新專案': 'badge-green',
+      '既有專案': 'badge-brown',
+      '個人專案': 'badge-sideproj',
+      'New Project': 'badge-green',
+      'Existing Project': 'badge-brown',
+      'Side Project': 'badge-sideproj',
+    };
+
+    function parseTSV(text) {
+      const lines = text.trim().split('\n');
+      const headers = lines[0].split('\t');
+      return lines.slice(1).filter(l => l.trim()).map(line => {
+        const values = line.split('\t');
+        const obj = {};
+        headers.forEach((h, i) => obj[h] = values[i] || '');
+        return obj;
       });
-    });
+    }
+
+    function renderTimeline(projects) {
+      const timeline = document.getElementById('timeline');
+      timeline.innerHTML = '';
+
+      const grouped = {};
+      eras.forEach((_, i) => grouped[i] = []);
+      projects.forEach(p => {
+        const era = parseInt(p.era);
+        if (grouped[era]) grouped[era].push(p);
+      });
+
+      eras.forEach((era, i) => {
+        const eraDiv = document.createElement('div');
+        eraDiv.className = 'era';
+        eraDiv.innerHTML = `
+<div class="era-header">
+  <h2>${era.name}</h2>
+  <div class="era-period">${era.period}</div>
+</div>
+        `;
+        const projectsDiv = document.createElement('div');
+        projectsDiv.className = 'era-projects';
+
+        const sorted = grouped[i].sort((a, b) => parseInt(b.rank) - parseInt(a.rank));
+        sorted.forEach(p => {
+          const rank = parseInt(p.rank);
+          const own = parseInt(p.own);
+          const tags = p.tags ? JSON.parse(p.tags) : [];
+          const badgeClass = badgeClassMap[p.badge1] || 'badge-green';
+
+          const titleHtml = p.url
+            ? `<a href="${p.url}" target="_blank">${p.title}</a>`
+            : p.title;
+
+          const classes = ['project', `significance-${rank}`];
+          if (rank < 3) classes.push('hidden');
+          if (!own) classes.push('not-owned');
+
+          const div = document.createElement('div');
+          div.className = classes.join(' ');
+          div.dataset.r = rank;
+          div.innerHTML = `
+<div class="pj-header">
+  <span class="pj-title">${titleHtml}</span>
+  <div class="badges">
+    <span class="badge ${badgeClass}">${p.badge1}</span>
+    <span class="badge badge-secondary">${p.badge2}</span>
+  </div>
+</div>
+<div class="pj-category">${p.cat1}/${p.cat2}</div>
+<div class="pj-desc">${p.desc}</div>
+<div class="pj-tech">
+  ${tags.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+</div>
+          `;
+          projectsDiv.appendChild(div);
+        });
+
+        eraDiv.appendChild(projectsDiv);
+        timeline.appendChild(eraDiv);
+      });
+
+      bindToggle();
+    }
+
+    function bindToggle() {
+      const checkbox = document.getElementById('showAll');
+      const hiddenProjects = document.querySelectorAll('.project[data-r="1"], .project[data-r="2"]');
+      checkbox.addEventListener('change', function() {
+        hiddenProjects.forEach(project => {
+          project.classList.toggle('hidden', !this.checked);
+        });
+      });
+    }
+
+    renderTimeline(parseTSV(DATA_TSV));
   </script>
 </body>
 </html>

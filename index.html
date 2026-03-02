@@ -129,7 +129,11 @@
       display: none;
     }
 
-    .project-header {
+    .project.not-owned {
+      font-style: italic;
+    }
+
+    .pj-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -137,21 +141,27 @@
       margin-bottom: 0.5rem;
     }
 
-    .project-title {
+    .pj-title {
       font-weight: 600;
       font-size: 0.95rem;
       flex: 1;
     }
 
-    .project-title a {
-      color: inherit;
+    .pj-title a {
+      color: #3498db;
       text-decoration: none;
-      border-bottom: 1px dashed #999;
+      font-weight: 600;
     }
 
-    .project-title a:hover {
-      color: #3498db;
-      border-bottom-color: #3498db;
+    .pj-title a:hover {
+      color: #2980b9;
+      text-decoration: underline;
+    }
+
+    .badges {
+      display: flex;
+      gap: 0.25rem;
+      flex-shrink: 0;
     }
 
     .badge {
@@ -182,19 +192,24 @@
       color: #721c24;
     }
 
-    .project-category {
+    .badge-secondary {
+      background: #e2e3e5;
+      color: #383d41;
+    }
+
+    .pj-category {
       font-size: 0.8rem;
       color: #666;
       margin-bottom: 0.25rem;
     }
 
-    .project-desc {
+    .pj-desc {
       font-size: 0.85rem;
       color: #555;
       margin-bottom: 0.5rem;
     }
 
-    .project-tech {
+    .pj-tech {
       display: flex;
       flex-wrap: wrap;
       gap: 0.25rem;
@@ -206,13 +221,6 @@
       color: #555;
       padding: 0.15rem 0.4rem;
       border-radius: 3px;
-    }
-
-    .significance {
-      font-size: 0.7rem;
-      color: #888;
-      margin-top: 0.5rem;
-      text-align: right;
     }
 
     .significance-3 {
@@ -255,613 +263,113 @@
     </div>
   </header>
 
-  <div class="timeline-container">
-    <!-- Era 1: TSC Topco (2016-2020) -->
-    <div class="era">
-      <div class="era-header">
-        <h2>TSC Topco</h2>
-        <div class="era-period">2016 - 2020</div>
-      </div>
-      <div class="era-projects">
-        <!-- r=3 projects -->
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">跨平台資料轉移（部落格文章）</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">RPA</div>
-          <div class="project-desc">自動化搬遷 500 篇部落格文章，整合 Google Photos API 處理圖片託管</div>
-          <div class="project-tech">
-            <span class="tech-tag">AutoIt</span>
-            <span class="tech-tag">C# Lib</span>
-            <span class="tech-tag">Google Photos</span>
-            <span class="tech-tag">Google API</span>
-          </div>
-        </div>
+  <div class="timeline-container" id="timeline"></div>
 
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">跨平台資料轉移（悠遊卡）</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">RPA</div>
-          <div class="project-desc">從悠遊卡後台系統批次匯出資料，包含驗證碼自動識別機制</div>
-          <div class="project-tech">
-            <span class="tech-tag">AutoIt</span>
-            <span class="tech-tag">C# Lib</span>
-            <span class="tech-tag">CAPTCHA 破解</span>
-            <span class="tech-tag">bitcoin</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">養豬場電子表單</span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category">web / internal</div>
-          <div class="project-desc">運用元程式設計動態產生表單欄位，第一個接案經驗</div>
-          <div class="project-tech">
-            <span class="tech-tag">Vue.js</span>
-            <span class="tech-tag">CLI</span>
-            <span class="tech-tag">字串處理</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">Infinitode 遊戲解析器</span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category">RPA / data</div>
-          <div class="project-desc">透過 OCR 擷取遊戲截圖數據，自動整理至試算表進行分析</div>
-          <div class="project-tech">
-            <span class="tech-tag">GCP OCR</span>
-            <span class="tech-tag">Google Spreadsheet</span>
-            <span class="tech-tag">Google Photos</span>
-          </div>
-        </div>
-
-        <!-- r=2 projects -->
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">TSC Fit 管理工具</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">CLI / internal</div>
-          <div class="project-desc">開發 CLI 任務排程工具，整合第三方 API 自動執行定期作業</div>
-          <div class="project-tech">
-            <span class="tech-tag">EF</span>
-            <span class="tech-tag">CLI</span>
-            <span class="tech-tag">LINQ</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">企業入口網站 4.0</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">web / internal</div>
-          <div class="project-desc">重新設計企業入口網站，實作響應式介面與客製化儀表板</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET WebForm</span>
-            <span class="tech-tag">jQuery</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">內容管理系統 2.0</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">web / cms</div>
-          <div class="project-desc">開發新版 CMS 系統，支援響應式設計與自訂版面配置</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET MVC</span>
-            <span class="tech-tag">ADO.NET</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">TSC Fit 健身系統</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">web / internal</div>
-          <div class="project-desc">建置健身數據儀表板，進行資料庫與前端效能優化</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET WebForm</span>
-            <span class="tech-tag">jQuery</span>
-            <span class="tech-tag">EF</span>
-          </div>
-        </div>
-
-        <!-- r=1 projects -->
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">VBA 重構專案</span>
-            <span class="badge badge-brown">既有專案</span>
-          </div>
-          <div class="project-category">vba / internal</div>
-          <div class="project-desc">重構遺留 VBA 程式碼，釐清並文件化業務需求</div>
-          <div class="project-tech">
-            <span class="tech-tag">VBA</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">電子表單系統</span>
-            <span class="badge badge-brown">既有專案</span>
-          </div>
-          <div class="project-category">web / internal</div>
-          <div class="project-desc">維護電子表單系統，整合 ERP 與第三方函式庫</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET WebForm</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">日周報系統</span>
-            <span class="badge badge-brown">既有專案</span>
-          </div>
-          <div class="project-category">web / internal</div>
-          <div class="project-desc">開發日周報系統，整合 CKEditor 富文本編輯功能</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET WebForm</span>
-            <span class="tech-tag">MVC</span>
-            <span class="tech-tag">CKEditor</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">VBA 甘特圖</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">pm / internal</div>
-          <div class="project-desc">使用 VBA 繪圖功能開發甘特圖產生工具</div>
-          <div class="project-tech">
-            <span class="tech-tag">VBA 繪圖</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">SSO AD 帳號同步</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">RPA / data</div>
-          <div class="project-desc">排查 SSO 與 Active Directory 帳號同步問題，制定標準流程</div>
-          <div class="project-tech">
-            <span class="tech-tag">AD</span>
-            <span class="tech-tag">ASP.NET</span>
-            <span class="tech-tag">TAM</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">數位學習自動點擊工具</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">RPA</div>
-          <div class="project-desc">自動化數位學習平台的課程進度點擊</div>
-          <div class="project-tech">
-            <span class="tech-tag">AutoIt</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">104人力銀行解析器</span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category">web / parser</div>
-          <div class="project-desc">第一個網頁爬蟲專案，解析 104 人力銀行職缺資料</div>
-          <div class="project-tech">
-            <span class="tech-tag">CLI</span>
-            <span class="tech-tag">HttpAgilityPack</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">RTF 格式轉換器</span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category">CLI / data</div>
-          <div class="project-desc">解析 RTF 格式文件並轉換為純文字</div>
-          <div class="project-tech">
-            <span class="tech-tag">CLI</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Era 2: ONElab (2020-2022) -->
-    <div class="era">
-      <div class="era-header">
-        <h2>ONElab</h2>
-        <div class="era-period">2020 - 2022</div>
-      </div>
-      <div class="era-projects">
-        <!-- r=3 projects -->
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">ELK 日誌系統</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">oss</div>
-          <div class="project-desc">建置 ELK Stack 集中式日誌平台，支援多服務即時監控與 Kibana 查詢</div>
-          <div class="project-tech">
-            <span class="tech-tag">Linux</span>
-            <span class="tech-tag">Docker Swarm</span>
-            <span class="tech-tag">Docker-Compose</span>
-            <span class="tech-tag">ELK</span>
-            <span class="tech-tag">NLog</span>
-            <span class="tech-tag">Lucene</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">機器人偵測報表</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">data</div>
-          <div class="project-desc">開發可疑帳號偵測系統，使用位元旗標標記異常行為並開發旗標查詢器</div>
-          <div class="project-tech">
-            <span class="tech-tag">T-SQL</span>
-            <span class="tech-tag">.NET</span>
-            <span class="tech-tag">dataurl</span>
-            <span class="tech-tag">bit-flags</span>
-          </div>
-        </div>
-
-        <!-- r=2 projects -->
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">原生手機應用 API 封裝</span>
-            <span class="badge badge-brown">既有專案</span>
-          </div>
-          <div class="project-category">api</div>
-          <div class="project-desc">封裝後端邏輯 (帳務、賽果、會員)，架設 API 供原生手機應用使用</div>
-          <div class="project-tech">
-            <span class="tech-tag">C# .NET</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">打卡自動化</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">自動化打卡流程的腳本工具（僅供實驗用途）</div>
-          <div class="project-tech">
-            <span class="tech-tag">cmd.exe</span>
-          </div>
-        </div>
-
-        <!-- r=1 projects -->
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">網站組態設定查詢工具</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">cli</div>
-          <div class="project-desc">開發 CLI 工具反向查詢網站組態設定檔</div>
-          <div class="project-tech">
-            <span class="tech-tag">C# .NET CLI</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">Postman 整合測試</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">test</div>
-          <div class="project-desc">撰寫 Postman 腳本進行 API 整合測試</div>
-          <div class="project-tech">
-            <span class="tech-tag">Postman</span>
-            <span class="tech-tag">JavaScript</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">VSCode Markdown 擴充套件</span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category">ext</div>
-          <div class="project-desc">開發 VSCode 擴充套件優化 Markdown 筆記體驗</div>
-          <div class="project-tech">
-            <span class="tech-tag">TypeScript</span>
-            <span class="tech-tag">Redux</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">UM 服務更新自動化</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category">devops</div>
-          <div class="project-desc">自動化服務更新流程，部署時間從 50 分鐘縮短至 5 分鐘</div>
-          <div class="project-tech">
-            <span class="tech-tag">PowerShell</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Era 3: LogiKCo (2022-2024) -->
-    <div class="era">
-      <div class="era-header">
-        <h2>LogiKCo</h2>
-        <div class="era-period">2022 - 2024</div>
-      </div>
-      <div class="era-projects">
-        <!-- r=3 projects -->
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">物流管理平台</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">全端開發物流調度系統，涵蓋訂單派送、車輛排程與資源管理功能</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET</span>
-            <span class="tech-tag">react-admin</span>
-            <span class="tech-tag">KendoUI</span>
-            <span class="tech-tag">MS-SQL</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title">資安整合專案</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">整合 KnowBe4 資安意識訓練平台，實作 Webhook 與 SSO 單一登入</div>
-          <div class="project-tech">
-            <span class="tech-tag">webhook</span>
-            <span class="tech-tag">Playwright</span>
-            <span class="tech-tag">MS-SQL</span>
-            <span class="tech-tag">SSO</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title"><a href="https://personal-blog-khaki.vercel.app/" target="_blank">第一個技術部落格</a></span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">撰寫網頁開發技術文章，從零設計部落格視覺風格與互動體驗</div>
-          <div class="project-tech">
-            <span class="tech-tag">JAMstack</span>
-            <span class="tech-tag">Next.js</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title"><a href="https://marketplace.visualstudio.com/items?itemName=JohnTao.markdown-outline-helper" target="_blank">VSCode 擴充套件 (TDD)</a></span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">以 TDD 方式開發的 Markdown 大綱輔助工具，已上架 VS Marketplace</div>
-          <div class="project-tech">
-            <span class="tech-tag">TypeScript</span>
-            <span class="tech-tag">Redux</span>
-            <span class="tech-tag">TDD</span>
-          </div>
-        </div>
-
-        <!-- r=2 projects -->
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">SMART 學生補助系統</span>
-            <span class="badge badge-brown">既有專案</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">維護學生補助申請系統，處理審核流程與報表功能</div>
-          <div class="project-tech">
-            <span class="tech-tag">ASP.NET MVC</span>
-            <span class="tech-tag">KendoUI</span>
-            <span class="tech-tag">MS-SQL</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">電影資料解析器</span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">使用 Playwright 自動爬取電影資料並匯出至試算表</div>
-          <div class="project-tech">
-            <span class="tech-tag">C#</span>
-            <span class="tech-tag">Playwright</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">591租屋網解析器</span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">背景服務持續爬取 591 租屋資訊，儲存至 SQLite 資料庫</div>
-          <div class="project-tech">
-            <span class="tech-tag">C#</span>
-            <span class="tech-tag">SQLite</span>
-            <span class="tech-tag">daemon</span>
-            <span class="tech-tag">Playwright</span>
-            <span class="tech-tag">headless-mode</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Era 4: Gap Year (2025) -->
-    <div class="era">
-      <div class="era-header">
-        <h2>Gap Year</h2>
-        <div class="era-period">2025</div>
-      </div>
-      <div class="era-projects">
-        <!-- r=3 projects -->
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title"><a href="https://github.com/johntao/design-docs" target="_blank">VIM 按鍵遊戲</a></span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category">game</div>
-          <div class="project-desc">透過遊戲化方式學習 VIM 快捷鍵，使用 SDD 與 AI 輔助開發的互動式網頁遊戲</div>
-          <div class="project-tech">
-            <span class="tech-tag">Claude-Code</span>
-            <span class="tech-tag">plain-HTML</span>
-            <span class="tech-tag">SDD</span>
-          </div>
-        </div>
-
-        <div class="project significance-3" data-r="3">
-          <div class="project-header">
-            <span class="project-title"><a href="https://johntao.dev" target="_blank">個人部落格</a></span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category">blog</div>
-          <div class="project-desc">累積 30 篇技術文章，探索 AI 輔助寫作的可能性</div>
-          <div class="project-tech">
-            <span class="tech-tag">Claude-Code</span>
-            <span class="tech-tag">Supabase</span>
-            <span class="tech-tag">MCP</span>
-            <span class="tech-tag">Lynx-Compatible</span>
-          </div>
-        </div>
-
-        <!-- r=2 projects -->
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">一鍵下單機器人</span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category">bot</div>
-          <div class="project-desc">使用 Playwright 自動化電影下單流程</div>
-          <div class="project-tech">
-            <span class="tech-tag">Claude-Code</span>
-            <span class="tech-tag">Playwright</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">公司網站與名片設計</span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category">web</div>
-          <div class="project-desc">運用 AI 工具快速完成公司網站與名片視覺設計</div>
-          <div class="project-tech">
-            <span class="tech-tag">Azure DevOps</span>
-            <span class="tech-tag">Astro</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">RTF 解析器重製版</span>
-            <span class="badge badge-sideproj">個人專案</span>
-          </div>
-          <div class="project-category">web</div>
-          <div class="project-desc">重新設計 RTF 解析器 (2020)，程式碼精簡為原版的十分之一</div>
-          <div class="project-tech">
-            <span class="tech-tag">.NET 10</span>
-            <span class="tech-tag">Claude-Code</span>
-          </div>
-        </div>
-
-        <div class="project significance-2 hidden" data-r="2">
-          <div class="project-header">
-            <span class="project-title">LangChain 教學</span>
-            <span class="badge badge-brown">既有專案</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">首次擔任講師，教授 LangChain 與 AI 應用開發</div>
-          <div class="project-tech">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">Colab</span>
-            <span class="tech-tag">LangChain</span>
-          </div>
-        </div>
-
-        <!-- r=1 projects -->
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">綠界金流模組升級</span>
-            <span class="badge badge-brown">既有專案</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">升級綠界金流模組，首次使用 Python 開發</div>
-          <div class="project-tech">
-            <span class="tech-tag">Python</span>
-          </div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">銷售流程設計</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">設計並文件化銷售工作流程</div>
-          <div class="project-tech"></div>
-        </div>
-
-        <div class="project significance-1 hidden" data-r="1">
-          <div class="project-header">
-            <span class="project-title">流程設計與實作</span>
-            <span class="badge badge-green">新專案</span>
-          </div>
-          <div class="project-category"></div>
-          <div class="project-desc">在 AWS 上建置 20 個 Odoo ERP 實例</div>
-          <div class="project-tech">
-            <span class="tech-tag">CloudPepper</span>
-            <span class="tech-tag">AWS</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
+  <script src="data.js"></script>
   <script>
     const eras = [
-{"name": "TSC Topco", "period": "2016 - 2020" },
-{"name": "ONElab", "period": "2020 - 2022" },
-{"name": "LogiKCo", "period": "2022 - 2024" },
-{"name": "YunJi Studio", "period": "2025 - 2026" }
-];
-    const checkbox = document.getElementById('showAll');
-    const hiddenProjects = document.querySelectorAll('.project[data-r="1"], .project[data-r="2"]');
+      {"name": "崇越科技", "period": "2016 - 2020" },
+      {"name": "瑞嘉軟體", "period": "2020 - 2022" },
+      {"name": "羅奇科技", "period": "2022 - 2024" },
+      {"name": "芸机工作室", "period": "2025 - 2026" }
+    ];
 
-    checkbox.addEventListener('change', function() {
-      hiddenProjects.forEach(project => {
-        if (this.checked) {
-          project.classList.remove('hidden');
-        } else {
-          project.classList.add('hidden');
-        }
+    const badgeClassMap = {
+      '新專案': 'badge-green',
+      '既有專案': 'badge-brown',
+      '個人專案': 'badge-sideproj',
+      'New Project': 'badge-green',
+      'Existing Project': 'badge-brown',
+      'Side Project': 'badge-sideproj',
+    };
+
+    function parseTSV(text) {
+      const lines = text.trim().split('\n');
+      const headers = lines[0].split('\t');
+      return lines.slice(1).filter(l => l.trim()).map(line => {
+        const values = line.split('\t');
+        const obj = {};
+        headers.forEach((h, i) => obj[h] = values[i] || '');
+        return obj;
       });
-    });
+    }
+
+    function renderTimeline(projects) {
+      const timeline = document.getElementById('timeline');
+      timeline.innerHTML = '';
+
+      const grouped = {};
+      eras.forEach((_, i) => grouped[i] = []);
+      projects.forEach(p => {
+        const era = parseInt(p.era);
+        if (grouped[era]) grouped[era].push(p);
+      });
+
+      eras.forEach((era, i) => {
+        const eraDiv = document.createElement('div');
+        eraDiv.className = 'era';
+        eraDiv.innerHTML = `
+<div class="era-header">
+  <h2>${era.name}</h2>
+  <div class="era-period">${era.period}</div>
+</div>
+        `;
+        const projectsDiv = document.createElement('div');
+        projectsDiv.className = 'era-projects';
+
+        const sorted = grouped[i].sort((a, b) => parseInt(b.rank) - parseInt(a.rank));
+        sorted.forEach(p => {
+          const rank = parseInt(p.rank);
+          const own = parseInt(p.own);
+          const tags = p.tags ? JSON.parse(p.tags) : [];
+          const badgeClass = badgeClassMap[p.badge1] || 'badge-green';
+
+          const titleHtml = p.url
+            ? `<a href="${p.url}" target="_blank">${p.title}</a>`
+            : p.title;
+
+          const classes = ['project', `significance-${rank}`];
+          if (rank < 3) classes.push('hidden');
+          if (!own) classes.push('not-owned');
+
+          const div = document.createElement('div');
+          div.className = classes.join(' ');
+          div.dataset.r = rank;
+          div.innerHTML = `
+<div class="pj-header">
+  <span class="pj-title">${titleHtml}</span>
+  <div class="badges">
+    <span class="badge ${badgeClass}">${p.badge1}</span>
+    <span class="badge badge-secondary">${p.badge2}</span>
+  </div>
+</div>
+<div class="pj-category">${p.cat1}/${p.cat2}</div>
+<div class="pj-desc">${p.desc}</div>
+<div class="pj-tech">
+  ${tags.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+</div>
+          `;
+          projectsDiv.appendChild(div);
+        });
+
+        eraDiv.appendChild(projectsDiv);
+        timeline.appendChild(eraDiv);
+      });
+
+      bindToggle();
+    }
+
+    function bindToggle() {
+      const checkbox = document.getElementById('showAll');
+      const hiddenProjects = document.querySelectorAll('.project[data-r="1"], .project[data-r="2"]');
+      checkbox.addEventListener('change', function() {
+        hiddenProjects.forEach(project => {
+          project.classList.toggle('hidden', !this.checked);
+        });
+      });
+    }
+
+    renderTimeline(parseTSV(DATA_TSV));
   </script>
 </body>
 </html>
