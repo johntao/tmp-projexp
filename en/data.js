@@ -30,9 +30,9 @@ VSCode Extension (TDD)	Side Project	vscode	devops	extension	1	2	3	["TypeScript",
 SMART Student Subsidy System	Existing Project	web	web	Edu-sup	0	2	2	["ASP.NET MVC","KendoUI","MS-SQL"]	Maintained student subsidy application system, handled review process and reporting features
 Movie Parser	Side Project	na	rpa	Web-crawler	1	2	2	["C#","Playwright"]	Used Playwright to automatically scrape movie data and export to spreadsheets
 591 Rental Parser	Side Project	na	rpa	Web-crawler	1	2	2	["C#","SQLite","daemon","Playwright","headless-mode"]	Background service continuously scraping 591 rental information, stored in SQLite database
-Time Tracker	Side Project	web	web	Time-tracking	1	3	3	["vibe-code","SDD","github-pages","ring-menu","design"]	Personal time tracker: AI development, concept design, UI research	./ttapp
-Mandala Chart	Side Project	web	web	Mandala-chart	1	3	3	["vibe-code","SDD","github-pages","ring-menu","design"]	Mandala chart: AI development, concept design, UI research	./mandala
-VIM Keys Game	Side Project	web	web	game	1	3	3	["vibe-code","SDD","github-pages","ring-menu","design"]	Learn VIM shortcuts through gamification, interactive web game developed with SDD and AI assistance	./game.html
+Time Tracker	Side Project	web	web	Time-tracking	1	3	3	["vibe-code","SDD","github-pages","ring-menu","design"]	Personal time tracker: AI development, concept design, UI research	../ttapp/
+Mandala Chart	Side Project	web	web	Mandala-chart	1	3	3	["vibe-code","SDD","github-pages","ring-menu","design"]	Mandala chart: AI development, concept design, UI research	../mandala/
+VIM Keys Game	Side Project	web	web	game	1	3	3	["vibe-code","SDD","github-pages","ring-menu","design"]	Learn VIM shortcuts through gamification, interactive web game developed with SDD and AI assistance	../game/
 Personal Blog	Side Project	web	web	blog	1	3	3	["Claude-Code","Supabase","MCP","Lynx-Compatible"]	Accumulated 30 technical articles, exploring possibilities of AI-assisted writing	https://johntao.dev
 One-Shot Ordering Bot	Side Project	cli	rpa	bot	1	3	2	["Claude-Code","Playwright"]	Used Playwright to automate movie ticket ordering process
 Company Website & Business Card	Side Project	web	web	Company-site	1	3	2	["Azure DevOps","Astro"]	Used AI tools to quickly complete company website and business card visual design	https://www.yjcraft.com/

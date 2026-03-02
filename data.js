@@ -32,7 +32,7 @@ SMART 學生補助系統	既有專案	web	web	Edu-sup	0	2	2	["ASP.NET MVC","Kend
 591租屋網解析器	個人專案	na	rpa	Web-crawler	1	2	2	["C#","SQLite","daemon","Playwright","headless-mode"]	背景服務持續爬取 591 租屋資訊，儲存至 SQLite 資料庫	
 時間記錄器	個人專案	web	web	Time-tracking	1	3	3	["vibe-code","SDD","github-pages","ring-menu","design"]	個人時間記錄器：AI 開發、概念設計、UI研究	./ttapp
 曼陀羅九宮格	個人專案	web	web	Mandala-chart	1	3	3	["vibe-code","SDD","github-pages","ring-menu","design"]	曼陀羅九宮格：AI 開發、概念設計、UI研究	./mandala
-VIM 按鍵遊戲	個人專案	web	web	game	1	3	3	["vibe-code","SDD","github-pages","ring-menu","design"]	透過遊戲化方式學習 VIM 快捷鍵，使用 SDD 與 AI 輔助開發的互動式網頁遊戲	./game.html
+VIM 按鍵遊戲	個人專案	web	web	game	1	3	3	["vibe-code","SDD","github-pages","ring-menu","design"]	透過遊戲化方式學習 VIM 快捷鍵，使用 SDD 與 AI 輔助開發的互動式網頁遊戲	./game/
 個人部落格	個人專案	web	web	blog	1	3	3	["Claude-Code","Supabase","MCP","Lynx-Compatible"]	累積 30 篇技術文章，探索 AI 輔助寫作的可能性	https://johntao.dev
 一鍵下單機器人	個人專案	cli	rpa	bot	1	3	2	["Claude-Code","Playwright"]	使用 Playwright 自動化電影下單流程	
 公司網站與名片設計	個人專案	web	web	Company-site	1	3	2	["Azure DevOps","Astro"]	運用 AI 工具快速完成公司網站與名片視覺設計	https://www.yjcraft.com/
